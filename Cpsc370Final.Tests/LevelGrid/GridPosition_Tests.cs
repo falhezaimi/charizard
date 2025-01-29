@@ -3,6 +3,18 @@
 public class GridPosition_Tests
 {
     [Fact]
+    private void TestDistance()
+    {
+        GridPosition a = new GridPosition(0, 0);
+        GridPosition b = new GridPosition(5, -2);
+        GridPosition c = new GridPosition(-2, 5);
+        
+        Assert.Equal(7, GridPosition.Distance(a, b));
+        Assert.Equal(7, GridPosition.Distance(a, c));
+        Assert.Equal(14, GridPosition.Distance(b, c));
+    }
+    
+    [Fact]
     private void TestToString()
     {
         GridPosition a = new GridPosition(1, 2);
