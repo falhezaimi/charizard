@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cpsc370Final", "Cpsc370Final\Cpsc370Final.csproj", "{13CC806C-4AAD-4F71-A73A-EED6A6CD1E3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cpsc370Final.Tests", "Cpsc370Final.Tests\Cpsc370Final.Tests.csproj", "{F54C1ADE-395F-4E74-AE9B-96BCAE7FA5DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13CC806C-4AAD-4F71-A73A-EED6A6CD1E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13CC806C-4AAD-4F71-A73A-EED6A6CD1E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13CC806C-4AAD-4F71-A73A-EED6A6CD1E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13CC806C-4AAD-4F71-A73A-EED6A6CD1E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F54C1ADE-395F-4E74-AE9B-96BCAE7FA5DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F54C1ADE-395F-4E74-AE9B-96BCAE7FA5DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F54C1ADE-395F-4E74-AE9B-96BCAE7FA5DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F54C1ADE-395F-4E74-AE9B-96BCAE7FA5DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
