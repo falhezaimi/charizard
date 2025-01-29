@@ -40,4 +40,16 @@ public class LevelGrid_Tests
         Assert.True(levelGrid.IsPositionEmpty(emptyPosition));
         Assert.False(levelGrid.IsPositionEmpty(playerPosition));
     }
+
+    [Fact]
+    private void TestIsPositionOccupied()
+    {
+        LevelGrid levelGrid = new LevelGrid(20, 10);
+        GridPosition playerPosition = new GridPosition(0, 0);
+        GridPosition emptyPosition = new GridPosition(1, 0);
+        Player player = new Player(levelGrid, playerPosition);
+        
+        Assert.True(levelGrid.IsPositionOccupied(playerPosition));
+        Assert.False(levelGrid.IsPositionOccupied(emptyPosition));
+    }
 }
