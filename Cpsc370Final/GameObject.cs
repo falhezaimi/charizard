@@ -3,9 +3,9 @@
 namespace Cpsc370Final;
 
 /// <summary>
-/// This class is what you inherit from when making an entity for the game that exists on the grid.
+/// This class is what you inherit from when making any object that exists on the grid.
 /// </summary>
-public class GameObject
+public abstract class GameObject
 {
     public GameObject[,] worldGrid;
     public int positionX;
@@ -18,16 +18,9 @@ public class GameObject
         this.positionY = spawnPositionY;
         worldGrid[spawnPositionY, spawnPositionX] = this;
     }
-    
-    public char GetAsciiCharacter()
-    {
-        return 'P';
-    }
 
-    public ConsoleColor GetAsciiColor()
-    {
-        return ConsoleColor.White;
-    }
+    public abstract char GetAsciiCharacter();
+    public abstract ConsoleColor GetAsciiColor();
 
     public void Move(Direction moveDirection)
     {

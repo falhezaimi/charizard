@@ -5,7 +5,7 @@ class Program
     private static GameObject[,] worldGrid;
     private static Random rand = new Random();
 
-    private static GameObject player;
+    private static Player player;
     
     private static void Main(string[] args)
     {
@@ -33,7 +33,7 @@ class Program
         
         int middleX = (worldGrid.GetLength(1) - 1) / 2;
         int middleY = (worldGrid.GetLength(0) - 1) / 2;
-        player = new GameObject(worldGrid, middleX, middleY);
+        player = new Player(worldGrid, middleX, middleY);
     }
 
     private static void ProcessCommand(string command)
