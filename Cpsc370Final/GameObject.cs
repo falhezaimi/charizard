@@ -22,6 +22,12 @@ public abstract class GameObject
     public abstract char GetAsciiCharacter();
     public abstract ConsoleColor GetAsciiColor();
     /// <summary>
+    ///  This is used in order to filter objects when using detection methods.
+    ///  Ex: If I want to know if a player is north, I filter with DetectionTag.Player.
+    /// </summary>
+    /// <returns></returns>
+    public abstract DetectionTag GetDetectionTag();
+    /// <summary>
     /// This function runs for all GameObjects after the user inputs a player command.
     /// This is where you should put your AI for enemies doing stuff.
     /// </summary>
@@ -80,6 +86,41 @@ public abstract class GameObject
 
         return IsPositionInBounds(desiredPositionX, desiredPositionY) &&
                !IsPositionOccupied(desiredPositionX, desiredPositionY);
+    }
+
+    public bool DetectInDirection(DetectionTag tag, Direction direction)
+    {
+        int detectPositionX = positionX;
+        int detectPositionY = positionY;
+        
+        switch (direction)
+        {
+            case Direction.North:
+                detectPositionY -= 1;
+                break;
+            case Direction.East:
+                detectPositionX += 1;
+                break;
+            case Direction.South:
+                detectPositionY += 1;
+                break;
+            case Direction.West:
+                detectPositionX -= 1;
+                break;
+        }
+
+        if (!IsPositionInBounds(detectPositionX, detectPositionY))
+        {
+            return tag == DetectionTag.Wall;
+        }
+        
+        GameObject detectedGameObject = worldGrid[detectPositionY, detectPositionX];
+        if (detectedGameObject == null)
+        {
+            return tag == DetectionTag.Empty;
+        }
+        
+        return worldGrid[detectPositionY, detectPositionX].GetDetectionTag() == tag;
     }
 
     private bool IsPositionInBounds(int positionX, int positionY)
