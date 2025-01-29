@@ -23,7 +23,7 @@ public class LevelGrid
         gameObjects.Add(gameObject);
     }
 
-    public void MoveGameObject(GameObject gameObject, int newX, int newY)
+    public void SetGameObjectPosition(GameObject gameObject, int newX, int newY)
     {
         int oldX = gameObject.positionX;
         int oldY = gameObject.positionY;
@@ -43,6 +43,21 @@ public class LevelGrid
     private void SetGameObjectAtPosition(int x, int y, GameObject gameObject)
     {
         levelGrid[y, x] = gameObject;
+    }
+    
+    public bool IsPositionInBounds(int positionX, int positionY)
+    {
+        bool positionXInBounds = positionX >= 0 && positionX < GetWidth();
+        bool positionYInBounds = positionY >= 0 && positionY < GetHeight();
+        return positionXInBounds && positionYInBounds;
+    }
+    public bool IsPositionEmpty(int positionX, int positionY)
+    {
+        return GetGameObjectAtPosition(positionX, positionY) == null;
+    }
+    public bool IsPositionOccupied(int positionX, int positionY)
+    {
+        return GetGameObjectAtPosition(positionX, positionY) != null;
     }
 
     public void Render()

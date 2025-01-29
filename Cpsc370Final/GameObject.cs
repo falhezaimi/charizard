@@ -56,7 +56,7 @@ public abstract class GameObject
 
         if (CanMoveInDirection(moveDirection))
         {
-            levelGrid.MoveGameObject(this, desiredPositionX, desiredPositionY);
+            levelGrid.SetGameObjectPosition(this, desiredPositionX, desiredPositionY);
         }
     }
 
@@ -81,8 +81,8 @@ public abstract class GameObject
                 break;
         }
 
-        return IsPositionInBounds(desiredPositionX, desiredPositionY) &&
-               !IsPositionOccupied(desiredPositionX, desiredPositionY);
+        return levelGrid.IsPositionInBounds(desiredPositionX, desiredPositionY) &&
+               !levelGrid.IsPositionOccupied(desiredPositionX, desiredPositionY);
     }
 
     public bool DetectInDirection(DetectionTag tag, Direction direction)
@@ -106,29 +106,17 @@ public abstract class GameObject
                 break;
         }
 
-        if (!IsPositionInBounds(detectPositionX, detectPositionY))
+        if (!levelGrid.IsPositionInBounds(detectPositionX, detectPositionY))
         {
             return tag == DetectionTag.Wall;
         }
         
-        GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPositionX, detectPositionY);
-        if (detectedGameObject == null)
+        if (levelGrid.IsPositionEmpty(detectPositionX, detectPositionY))
         {
             return tag == DetectionTag.Empty;
         }
         
+        GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPositionX, detectPositionY);
         return detectedGameObject.GetDetectionTag() == tag;
-    }
-
-    private bool IsPositionInBounds(int positionX, int positionY)
-    {
-        bool positionXInBounds = positionX >= 0 && positionX < levelGrid.GetWidth();
-        bool positionYInBounds = positionY >= 0 && positionY < levelGrid.GetHeight();
-        return positionXInBounds && positionYInBounds;
-    }
-    
-    private bool IsPositionOccupied(int positionX, int positionY)
-    {
-        return levelGrid.GetGameObjectAtPosition(positionX, positionY) != null;
     }
 }
