@@ -41,7 +41,8 @@ class Program
     {
         int middleX = (levelGrid.GetWidth() - 1) / 2;
         int middleY = (levelGrid.GetHeight() - 1) / 2;
-        player = new Player(levelGrid, middleX, middleY);
+        GridPosition spawnPosition = new GridPosition(middleX, middleY);
+        player = new Player(levelGrid, spawnPosition);
     }
     
     private static void SpawnGoblins()
@@ -50,7 +51,8 @@ class Program
         {
             int randomX = rand.Next(0, levelGrid.GetWidth() - 1);
             int randomY = rand.Next(0, levelGrid.GetHeight() - 1);
-            GameObject goblin = new Goblin(levelGrid, randomX, randomY);
+            GridPosition spawnPosition = new GridPosition(randomX, randomY);
+            GameObject goblin = new Goblin(levelGrid, spawnPosition);
         }
     }
 

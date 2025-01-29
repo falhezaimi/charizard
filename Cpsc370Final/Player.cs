@@ -2,8 +2,7 @@
 
 public class Player : GameObject
 {
-    public Player(LevelGrid levelGrid, int spawnPositionX, int spawnPositionY) : base(levelGrid, spawnPositionX,
-        spawnPositionY)
+    public Player(LevelGrid levelGrid, GridPosition spawnPosition) : base(levelGrid, spawnPosition)
     {
     }
 

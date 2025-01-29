@@ -12,52 +12,53 @@ public class LevelGrid
         {
             for (int y = 0; y < GetHeight(); y++)
             {
-                SetGameObjectAtPosition(x, y, null);
+                GridPosition position = new GridPosition(x, y);
+                SetGameObjectAtPosition(position, null);
             }
         }
     }
 
     public void AddGameObjectToGrid(GameObject gameObject)
     {
-        levelGrid[gameObject.positionY, gameObject.positionX] = gameObject;
+        levelGrid[gameObject.position.y, gameObject.position.x] = gameObject;
         gameObjects.Add(gameObject);
     }
 
-    public void SetGameObjectPosition(GameObject gameObject, int newX, int newY)
+    public void SetGameObjectPosition(GameObject gameObject, GridPosition newPosition)
     {
-        int oldX = gameObject.positionX;
-        int oldY = gameObject.positionY;
+        int oldX = gameObject.position.x;
+        int oldY = gameObject.position.y;
         
         levelGrid[oldY, oldX] = null;
-        levelGrid[newY, newX] = gameObject;
+        levelGrid[newPosition.y, newPosition.x] = gameObject;
         
-        gameObject.positionX = newX;
-        gameObject.positionY = newY;
+        gameObject.position.x = newPosition.x;
+        gameObject.position.y = newPosition.y;
     }
 
-    public GameObject GetGameObjectAtPosition(int x, int y)
+    public GameObject GetGameObjectAtPosition(GridPosition position)
     {
-        return levelGrid[y, x];
+        return levelGrid[position.y, position.x];
     }
 
-    private void SetGameObjectAtPosition(int x, int y, GameObject gameObject)
+    private void SetGameObjectAtPosition(GridPosition position, GameObject gameObject)
     {
-        levelGrid[y, x] = gameObject;
+        levelGrid[position.y, position.x] = gameObject;
     }
     
-    public bool IsPositionInBounds(int positionX, int positionY)
+    public bool IsPositionInBounds(GridPosition position)
     {
-        bool positionXInBounds = positionX >= 0 && positionX < GetWidth();
-        bool positionYInBounds = positionY >= 0 && positionY < GetHeight();
+        bool positionXInBounds = position.x >= 0 && position.x < GetWidth();
+        bool positionYInBounds = position.y >= 0 && position.y < GetHeight();
         return positionXInBounds && positionYInBounds;
     }
-    public bool IsPositionEmpty(int positionX, int positionY)
+    public bool IsPositionEmpty(GridPosition position)
     {
-        return GetGameObjectAtPosition(positionX, positionY) == null;
+        return GetGameObjectAtPosition(position) == null;
     }
-    public bool IsPositionOccupied(int positionX, int positionY)
+    public bool IsPositionOccupied(GridPosition position)
     {
-        return GetGameObjectAtPosition(positionX, positionY) != null;
+        return GetGameObjectAtPosition(position) != null;
     }
 
     public void Render()

@@ -8,14 +8,12 @@ namespace Cpsc370Final;
 public abstract class GameObject
 {
     private LevelGrid levelGrid;
-    public int positionX;
-    public int positionY;
+    public GridPosition position;
 
-    public GameObject(LevelGrid levelGrid, int spawnPositionX, int spawnPositionY)
+    public GameObject(LevelGrid levelGrid, GridPosition spawnPosition)
     {
         this.levelGrid = levelGrid;
-        this.positionX = spawnPositionX;
-        this.positionY = spawnPositionY;
+        position = spawnPosition;
         levelGrid.AddGameObjectToGrid(this);
     }
 
@@ -35,88 +33,54 @@ public abstract class GameObject
 
     public void Move(Direction moveDirection)
     {
-        int desiredPositionX = positionX;
-        int desiredPositionY = positionY;
-        
-        switch (moveDirection)
-        {
-            case Direction.North:
-                desiredPositionY -= 1;
-                break;
-            case Direction.East:
-                desiredPositionX += 1;
-                break;
-            case Direction.South:
-                desiredPositionY += 1;
-                break;
-            case Direction.West:
-                desiredPositionX -= 1;
-                break;
-        }
+        GridPosition desiredPosition = position + GetDirectionOffset(moveDirection);
 
         if (CanMoveInDirection(moveDirection))
         {
-            levelGrid.SetGameObjectPosition(this, desiredPositionX, desiredPositionY);
+            levelGrid.SetGameObjectPosition(this, desiredPosition);
         }
     }
 
     public bool CanMoveInDirection(Direction moveDirection)
     {
-        int desiredPositionX = positionX;
-        int desiredPositionY = positionY;
-        
-        switch (moveDirection)
-        {
-            case Direction.North:
-                desiredPositionY -= 1;
-                break;
-            case Direction.East:
-                desiredPositionX += 1;
-                break;
-            case Direction.South:
-                desiredPositionY += 1;
-                break;
-            case Direction.West:
-                desiredPositionX -= 1;
-                break;
-        }
+        GridPosition desiredPosition = position + GetDirectionOffset(moveDirection);
 
-        return levelGrid.IsPositionInBounds(desiredPositionX, desiredPositionY) &&
-               !levelGrid.IsPositionOccupied(desiredPositionX, desiredPositionY);
+        return levelGrid.IsPositionInBounds(desiredPosition) &&
+               !levelGrid.IsPositionOccupied(desiredPosition);
     }
 
     public bool DetectInDirection(DetectionTag tag, Direction direction)
     {
-        int detectPositionX = positionX;
-        int detectPositionY = positionY;
-        
-        switch (direction)
-        {
-            case Direction.North:
-                detectPositionY -= 1;
-                break;
-            case Direction.East:
-                detectPositionX += 1;
-                break;
-            case Direction.South:
-                detectPositionY += 1;
-                break;
-            case Direction.West:
-                detectPositionX -= 1;
-                break;
-        }
+        GridPosition detectPosition = position + GetDirectionOffset(direction);
 
-        if (!levelGrid.IsPositionInBounds(detectPositionX, detectPositionY))
+        if (!levelGrid.IsPositionInBounds(detectPosition))
         {
             return tag == DetectionTag.Wall;
         }
         
-        if (levelGrid.IsPositionEmpty(detectPositionX, detectPositionY))
+        if (levelGrid.IsPositionEmpty(detectPosition))
         {
             return tag == DetectionTag.Empty;
         }
         
-        GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPositionX, detectPositionY);
+        GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPosition);
         return detectedGameObject.GetDetectionTag() == tag;
+    }
+
+    public GridPosition GetDirectionOffset(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.North:
+                return new GridPosition(0, -1);
+            case Direction.East:
+                return new GridPosition(1, 0);
+            case Direction.South:
+                return new GridPosition(0, 1);
+            case Direction.West:
+                return new GridPosition(-1, 0);
+            default:
+                return new GridPosition(0, 0);
+        }
     }
 }
