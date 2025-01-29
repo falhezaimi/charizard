@@ -3,6 +3,15 @@
 public class GridPosition_Tests
 {
     [Fact]
+    private void TestToString()
+    {
+        GridPosition a = new GridPosition(1, 2);
+        GridPosition b = new GridPosition(-1, -2);
+        Assert.Equal("(1, 2)", a.ToString());
+        Assert.Equal("(-1, -2)", b.ToString());
+    }
+    
+    [Fact]
     private void TestAdditionOperator()
     {
         GridPosition a;
