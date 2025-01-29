@@ -21,6 +21,11 @@ public abstract class GameObject
 
     public abstract char GetAsciiCharacter();
     public abstract ConsoleColor GetAsciiColor();
+    /// <summary>
+    /// This function runs for all GameObjects after the user inputs a player command.
+    /// This is where you should put your AI for enemies doing stuff.
+    /// </summary>
+    public abstract void PerformTurnAction();
 
     public void Move(Direction moveDirection)
     {
