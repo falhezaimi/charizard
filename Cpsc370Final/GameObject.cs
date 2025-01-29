@@ -29,24 +29,68 @@ public abstract class GameObject
 
     public void Move(Direction moveDirection)
     {
-        worldGrid[positionY, positionX] = null;
+        int desiredPositionX = positionX;
+        int desiredPositionY = positionY;
         
         switch (moveDirection)
         {
             case Direction.North:
-                positionY -= 1;
+                desiredPositionY -= 1;
                 break;
             case Direction.East:
-                positionX += 1;
+                desiredPositionX += 1;
                 break;
             case Direction.South:
-                positionY += 1;
+                desiredPositionY += 1;
                 break;
             case Direction.West:
-                positionX -= 1;
+                desiredPositionX -= 1;
                 break;
         }
+
+        if (CanMoveInDirection(moveDirection))
+        {
+            worldGrid[positionY, positionX] = null;
+            positionX = desiredPositionX;
+            positionY = desiredPositionY;
+            worldGrid[positionY, positionX] = this;
+        }
+    }
+
+    public bool CanMoveInDirection(Direction moveDirection)
+    {
+        int desiredPositionX = positionX;
+        int desiredPositionY = positionY;
         
-        worldGrid[positionY, positionX] = this;
+        switch (moveDirection)
+        {
+            case Direction.North:
+                desiredPositionY -= 1;
+                break;
+            case Direction.East:
+                desiredPositionX += 1;
+                break;
+            case Direction.South:
+                desiredPositionY += 1;
+                break;
+            case Direction.West:
+                desiredPositionX -= 1;
+                break;
+        }
+
+        return IsPositionInBounds(desiredPositionX, desiredPositionY) &&
+               !IsPositionOccupied(desiredPositionX, desiredPositionY);
+    }
+
+    private bool IsPositionInBounds(int positionX, int positionY)
+    {
+        bool positionXInBounds = positionX >= 0 && positionX < worldGrid.GetLength(1);
+        bool positionYInBounds = positionY >= 0 && positionY < worldGrid.GetLength(0);
+        return positionXInBounds && positionYInBounds;
+    }
+    
+    private bool IsPositionOccupied(int positionX, int positionY)
+    {
+        return worldGrid[positionY, positionX] != null;
     }
 }
