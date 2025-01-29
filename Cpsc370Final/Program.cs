@@ -8,7 +8,6 @@ class Program
         rock,
         empty,
     }
-
     private static GameObject[,] worldGrid;
     private static Random rand = new Random();
 
