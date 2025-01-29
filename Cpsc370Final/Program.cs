@@ -5,7 +5,7 @@ class Program
     private static GameObject[,] worldGrid;
     private static Random rand = new Random();
 
-    private static GameObject player = new GameObject();
+    private static GameObject player;
     
     private static void Main(string[] args)
     {
@@ -31,10 +31,9 @@ class Program
             }
         }
         
-        player.positionX = (worldGrid.GetLength(1) - 1) / 2;
-        player.positionY = (worldGrid.GetLength(0) - 1) / 2;
-        worldGrid[player.positionY, player.positionX] = player;
-        Console.WriteLine($"{player.positionX}, {player.positionY}");
+        int middleX = (worldGrid.GetLength(1) - 1) / 2;
+        int middleY = (worldGrid.GetLength(0) - 1) / 2;
+        player = new GameObject(worldGrid, middleX, middleY);
     }
 
     private static void ProcessCommand(string command)
@@ -42,37 +41,14 @@ class Program
         command = command.ToLower();
         command = command.Trim();
 
-        if (command == "w") MovePlayer(Direction.North);
-        else if (command == "d") MovePlayer(Direction.East);
-        else if (command == "a") MovePlayer(Direction.West);
-        else if (command == "s") MovePlayer(Direction.South);
-    }
-
-    private static void MovePlayer(Direction moveDirection)
-    {
-        worldGrid[player.positionY, player.positionX] = null;
-        
-        switch (moveDirection)
-        {
-            case Direction.North:
-                player.positionY -= 1;
-                break;
-            case Direction.East:
-                player.positionX += 1;
-                break;
-            case Direction.South:
-                player.positionY += 1;
-                break;
-            case Direction.West:
-                player.positionX -= 1;
-                break;
-        }
-        
-        worldGrid[player.positionY, player.positionX] = player;
+        if (command == "w") player.Move(Direction.North);
+        else if (command == "a") player.Move(Direction.West);
+        else if (command == "s") player.Move(Direction.South);
+        else if (command == "d") player.Move(Direction.East);
     }
     
     private static void Render() {
-        //Console.Clear();
+        Console.Clear();
         
         Console.WriteLine("Game Title:\n");
         
