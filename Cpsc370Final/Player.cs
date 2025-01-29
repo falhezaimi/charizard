@@ -2,7 +2,7 @@
 
 public class Player : GameObject
 {
-    public Player(GameObject[,] worldGrid, int spawnPositionX, int spawnPositionY) : base(worldGrid, spawnPositionX,
+    public Player(LevelGrid levelGrid, int spawnPositionX, int spawnPositionY) : base(levelGrid, spawnPositionX,
         spawnPositionY)
     {
     }

@@ -4,7 +4,7 @@ public class Goblin : GameObject
 {
     private Direction moveDirection = Direction.North;
     
-    public Goblin(GameObject[,] worldGrid, int spawnPositionX, int spawnPositionY) : base(worldGrid, spawnPositionX, spawnPositionY)
+    public Goblin(LevelGrid levelGrid, int spawnPositionX, int spawnPositionY) : base(levelGrid, spawnPositionX, spawnPositionY)
     {
     }
 

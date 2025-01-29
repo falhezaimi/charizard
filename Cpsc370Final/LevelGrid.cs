@@ -17,6 +17,24 @@ public class LevelGrid
         }
     }
 
+    public void AddGameObjectToGrid(GameObject gameObject)
+    {
+        levelGrid[gameObject.positionY, gameObject.positionX] = gameObject;
+        gameObjects.Add(gameObject);
+    }
+
+    public void MoveGameObject(GameObject gameObject, int newX, int newY)
+    {
+        int oldX = gameObject.positionX;
+        int oldY = gameObject.positionY;
+        
+        levelGrid[oldY, oldX] = null;
+        levelGrid[newY, newX] = gameObject;
+        
+        gameObject.positionX = newX;
+        gameObject.positionY = newY;
+    }
+
     public GameObject GetGameObjectAtPosition(int x, int y)
     {
         return levelGrid[y, x];
@@ -72,4 +90,5 @@ public class LevelGrid
     
     public int GetWidth() => levelGrid.GetLength(1);
     public int GetHeight() => levelGrid.GetLength(0);
+    public List<GameObject> GetGameObjects() => gameObjects;
 }

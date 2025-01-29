@@ -7,16 +7,16 @@ namespace Cpsc370Final;
 /// </summary>
 public abstract class GameObject
 {
-    public GameObject[,] worldGrid;
+    private LevelGrid levelGrid;
     public int positionX;
     public int positionY;
 
-    public GameObject(GameObject[,] worldGrid, int spawnPositionX, int spawnPositionY)
+    public GameObject(LevelGrid levelGrid, int spawnPositionX, int spawnPositionY)
     {
-        this.worldGrid = worldGrid;
+        this.levelGrid = levelGrid;
         this.positionX = spawnPositionX;
         this.positionY = spawnPositionY;
-        worldGrid[spawnPositionY, spawnPositionX] = this;
+        levelGrid.AddGameObjectToGrid(this);
     }
 
     public abstract char GetAsciiCharacter();
@@ -56,10 +56,7 @@ public abstract class GameObject
 
         if (CanMoveInDirection(moveDirection))
         {
-            worldGrid[positionY, positionX] = null;
-            positionX = desiredPositionX;
-            positionY = desiredPositionY;
-            worldGrid[positionY, positionX] = this;
+            levelGrid.MoveGameObject(this, desiredPositionX, desiredPositionY);
         }
     }
 
@@ -114,24 +111,24 @@ public abstract class GameObject
             return tag == DetectionTag.Wall;
         }
         
-        GameObject detectedGameObject = worldGrid[detectPositionY, detectPositionX];
+        GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPositionX, detectPositionY);
         if (detectedGameObject == null)
         {
             return tag == DetectionTag.Empty;
         }
         
-        return worldGrid[detectPositionY, detectPositionX].GetDetectionTag() == tag;
+        return detectedGameObject.GetDetectionTag() == tag;
     }
 
     private bool IsPositionInBounds(int positionX, int positionY)
     {
-        bool positionXInBounds = positionX >= 0 && positionX < worldGrid.GetLength(1);
-        bool positionYInBounds = positionY >= 0 && positionY < worldGrid.GetLength(0);
+        bool positionXInBounds = positionX >= 0 && positionX < levelGrid.GetWidth();
+        bool positionYInBounds = positionY >= 0 && positionY < levelGrid.GetHeight();
         return positionXInBounds && positionYInBounds;
     }
     
     private bool IsPositionOccupied(int positionX, int positionY)
     {
-        return worldGrid[positionY, positionX] != null;
+        return levelGrid.GetGameObjectAtPosition(positionX, positionY) != null;
     }
 }

@@ -3,7 +3,6 @@
 class Program
 {
     private static LevelGrid levelGrid;
-    private static List<GameObject> gameObjects = new List<GameObject>();
     private static Random rand = new Random();
 
     private static Player player;
@@ -24,7 +23,7 @@ class Program
 
     private static void PerformGameObjectTurnActions()
     {
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject gameObject in levelGrid.GetGameObjects())
         {
             gameObject.PerformTurnAction();
         }
@@ -34,28 +33,26 @@ class Program
     {
         levelGrid = new LevelGrid(20, 10);
         
-        //SpawnPlayer();
-        //SpawnGoblins();
+        SpawnPlayer();
+        SpawnGoblins();
     }
 
-    // private static void SpawnPlayer()
-    // {
-    //     int middleX = (levelGrid.GetWidth() - 1) / 2;
-    //     int middleY = (levelGrid.GetHeight() - 1) / 2;
-    //     player = new Player(levelGrid, middleX, middleY);
-    //     gameObjects.Add(player);
-    // }
-    //
-    // private static void SpawnGoblins()
-    // {
-    //     for (int i = 0; i < 5; i++)
-    //     {
-    //         int randomX = rand.Next(0, levelGrid.GetWidth() - 1);
-    //         int randomY = rand.Next(0, levelGrid.GetHeight() - 1);
-    //         GameObject goblin = new Goblin(levelGrid, randomX, randomY);
-    //         gameObjects.Add(goblin);
-    //     }
-    // }
+    private static void SpawnPlayer()
+    {
+        int middleX = (levelGrid.GetWidth() - 1) / 2;
+        int middleY = (levelGrid.GetHeight() - 1) / 2;
+        player = new Player(levelGrid, middleX, middleY);
+    }
+    
+    private static void SpawnGoblins()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            int randomX = rand.Next(0, levelGrid.GetWidth() - 1);
+            int randomY = rand.Next(0, levelGrid.GetHeight() - 1);
+            GameObject goblin = new Goblin(levelGrid, randomX, randomY);
+        }
+    }
 
     private static void ProcessCommand(string command)
     {
