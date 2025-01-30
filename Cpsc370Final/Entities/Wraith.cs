@@ -31,14 +31,7 @@ public class Wraith : GameObject
     {
         if (player == null) return;
 
-        Direction moveDirection = CalculateDirectionToPlayer(player);
+        Direction moveDirection = PathfindToPosition(player.position);
         Move(moveDirection);
-    }
-    
-    private Direction CalculateDirectionToPlayer(Player player)
-    {
-        int dx = player.position.x - position.x;
-        int dy = player.position.y - position.y;
-        return Math.Abs(dx) > Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
     }
 }
