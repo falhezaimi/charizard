@@ -3,11 +3,20 @@ using Cpsc370Final.Core;
 
 public static class GameUI
 {
-    public static int FloorNumber { get; private set; } = 1; // Tracks the current floor
+    public static int FloorNumber { get; private set; } = 1;
+    private static int MaxFloors = 5; // Define the max floor count
 
     public static void IncreaseFloor()
     {
-        FloorNumber++;
+        if (FloorNumber < MaxFloors)
+        {
+            FloorNumber++;
+        }
+    }
+
+    public static bool IsFinalFloor()
+    {
+        return FloorNumber == MaxFloors;
     }
 
     public static void DisplayUI(LevelGrid levelGrid, Player player, int keysToCollect)
@@ -25,5 +34,13 @@ public static class GameUI
     public static void DisplayMessage(string message)
     {
         Console.WriteLine($"\n{message}");
+    }
+
+    public static void DisplayCompletionMessage()
+    {
+        Console.Clear();
+        Console.WriteLine("\n🎉 You completed ROG! 🎉\n");
+        Console.WriteLine("Press any key to exit...");
+        Console.ReadKey();
     }
 }
