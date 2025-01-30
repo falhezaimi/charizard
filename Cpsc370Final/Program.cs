@@ -7,10 +7,8 @@ class Program
 {
     private static LevelGrid levelGrid;
     private static Random rand = new Random();
-
     private static Player player;
     private static Door exitDoor;
-
     private static bool gameOver = false;
 
     private static void Main(string[] args)
@@ -21,7 +19,9 @@ class Program
 
         while (!gameOver)
         {
-            Render();
+            // Display the UI with Floor Number
+            GameUI.DisplayUI(levelGrid);
+            
             Console.WriteLine("\nEnter a command (W/A/S/D to move):");
             string command = Console.ReadLine();
             player.ProcessCommand(command);
@@ -31,9 +31,10 @@ class Program
 
     private static void NextFloor()
     {
-        Console.Clear();
-        Console.WriteLine("\nYou entered the door! Somebody code the NextFloor function in Program to make this generate a new level.");
-        gameOver = true;
+        GameUI.IncreaseFloor(); // Increase the floor number
+        GameUI.DisplayMessage($"You completed Floor {GameUI.FloorNumber - 1}! Onto Floor {GameUI.FloorNumber}.");
+
+        GenerateMap(); // Generate a new dungeon floor
     }
 
     private static void EndGame()
@@ -67,65 +68,38 @@ class Program
     {
         for (int i = 0; i < 5; i++)
         {
-            GridPosition spawnPosition;
-            spawnPosition.x = rand.Next(1, levelGrid.GetWidth() - 1);
-            spawnPosition.y = rand.Next(1, levelGrid.GetHeight() - 1);   
+            GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
             GameObject goblin = new Goblin(levelGrid, spawnPosition);
         }
     }
 
     private static void SpawnSkeletons()
     {
-        for (int i = 0; i < 2; i++) // Adjust number as needed
+        for (int i = 0; i < 2; i++)
         {
-            GridPosition spawnPosition;
-            spawnPosition.x = rand.Next(1, levelGrid.GetWidth() - 1);
-            spawnPosition.y = rand.Next(1, levelGrid.GetHeight() - 1);   
+            GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
             GameObject skeleton = new Skeleton(levelGrid, spawnPosition);
         }
     }
 
     private static void SpawnWraiths()
     {
-        for (int i = 0; i < 1; i++) // Adjust number as needed
+        for (int i = 0; i < 1; i++)
         {
-            GridPosition spawnPosition;
-            spawnPosition.x = rand.Next(1, levelGrid.GetWidth() - 1);
-            spawnPosition.y = rand.Next(1, levelGrid.GetHeight() - 1);   
+            GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
             GameObject wraith = new Wraith(levelGrid, spawnPosition, player);
         }
     }
 
     private static void SpawnKey()
     {
-        GridPosition spawnPosition = new GridPosition(0, 0);
+        GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
         Key key = new Key(levelGrid, spawnPosition);
     }
 
     private static void SpawnDoor()
     {
-        GridPosition spawnPosition = new GridPosition(levelGrid.GetWidth()-1, levelGrid.GetHeight()-1);
+        GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
         exitDoor = new Door(levelGrid, spawnPosition);
-    }
-
-    // private static void SpawnRandomEntity(GameObject entity)
-    // {
-    //     int x, y;
-    //     do
-    //     {
-    //         x = rand.Next(1, worldGrid.GetLength(1) - 1);
-    //         y = rand.Next(1, worldGrid.GetLength(0) - 1);
-    //     } while (worldGrid[y, x] != null); // Ensure it spawns in an empty location
-    //
-    //     entity.positionX = x;
-    //     entity.positionY = y;
-    //     worldGrid[y, x] = entity;
-    //     gameObjects.Add(entity);
-    // }
-    
-    private static void Render() {
-        Console.Clear();
-        Console.WriteLine("Game Title:\n");
-        levelGrid.Render();
     }
 }
