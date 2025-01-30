@@ -50,10 +50,11 @@ class Program
         levelGrid = new LevelGrid(20, 10);
         
         SpawnPlayer();
-        // SpawnGoblins();
-        // SpawnSkeletons();
-        // SpawnWraiths();
+        SpawnGoblins();
+        SpawnSkeletons();
+        SpawnWraiths();
         SpawnBats();
+        SpawnBulls();
         SpawnKey();
         SpawnDoor();
     }
@@ -78,7 +79,7 @@ class Program
     
     private static void SpawnGoblins()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
             GameObject goblin = new Goblin(levelGrid, spawnPosition);
@@ -87,7 +88,7 @@ class Program
     
     private static void SpawnBats()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
             GameObject bat = new Bat(levelGrid, spawnPosition);
@@ -96,7 +97,7 @@ class Program
 
     private static void SpawnSkeletons()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 3; i++)
         {
             GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
             GameObject skeleton = new Skeleton(levelGrid, spawnPosition, player);
