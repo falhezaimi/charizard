@@ -13,37 +13,20 @@ public class Player : GameObject
     public override char GetAsciiCharacter() => 'P';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.White;
     public override DetectionTag GetDetectionTag() => DetectionTag.Player;
-    
+
+    public override void PlayerInteraction(Player player)
+    {
+        // Player doesn't interact with itself
+    }
+
     public void Move(Direction moveDirection)
     {
         GridPosition desiredPosition = position + GetDirectionOffset(moveDirection);
 
-        if (DetectInDirection(DetectionTag.Key, moveDirection))
+        if (!DetectInDirection(DetectionTag.Empty, moveDirection))
         {
-            GameObject key = GetGameObjectInDirection(moveDirection);
-            levelGrid.RemoveGameObjectFromGrid(key);
-            HeldKeys++;
-        }
-        
-        if (DetectInDirection(DetectionTag.Door, moveDirection))
-        {
-            OnEnteredDoor?.Invoke();
-        }
-
-        if (DetectInDirection(DetectionTag.Goblin, moveDirection))
-        {
-            Kill();
-        }
-        
-        if (DetectInDirection(DetectionTag.Skeleton, moveDirection))
-        {
-            Kill();
-        }
-        
-        if (DetectInDirection(DetectionTag.Wraith, moveDirection))
-        {
-            GridPosition randomPosition = levelGrid.GetRandomEmptyPosition();
-            levelGrid.SetGameObjectPosition(this, randomPosition);
+            GameObject gameObject = GetGameObjectInDirection(moveDirection);
+            if (gameObject != null) gameObject.PlayerInteraction(this);
         }
 
         if (CanMoveInDirection(moveDirection))
@@ -68,8 +51,19 @@ public class Player : GameObject
         // Players don't act automatically, so no need for an AI action.
     }
 
+    public void AddKey()
+    {
+        HeldKeys++;
+    }
+
+    public void EnterDoor()
+    {
+        OnEnteredDoor?.Invoke();
+    }
+
     public void Kill()
     {
+        levelGrid.RemoveGameObjectFromGrid(this);
         OnDied?.Invoke();
     }
 }

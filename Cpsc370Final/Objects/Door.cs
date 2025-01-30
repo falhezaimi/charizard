@@ -10,5 +10,10 @@ public class Door : GameObject
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Magenta;
     public override DetectionTag GetDetectionTag() => DetectionTag.Door;
     
+    public override void PlayerInteraction(Player player)
+    {
+        player.EnterDoor();
+    }
+    
     public override void PerformTurnAction() { }
 }

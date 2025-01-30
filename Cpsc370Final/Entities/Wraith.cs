@@ -15,34 +15,30 @@ public class Wraith : GameObject
     public override char GetAsciiCharacter() => 'W';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Cyan;
     public override DetectionTag GetDetectionTag() => DetectionTag.Wraith;
-
-    private Direction DetermineBestDirection(Player player)
+    
+    public override void PlayerInteraction(Player player)
     {
-        int dx = player.position.x - position.x;
-        int dy = player.position.y - position.y;
-        return Math.Abs(dx) > Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
+        TeleportPlayer(player);
     }
-
+    
     private void TeleportPlayer(Player player)
     {
         GridPosition randomPosition = levelGrid.GetRandomEmptyPosition();
         levelGrid.SetGameObjectPosition(player, randomPosition);
     }
-
+    
     public override void PerformTurnAction()
     {
         if (player == null) return;
 
-        Direction moveDirection = DetermineBestDirection(player);
-        
-        if (DetectInDirection(DetectionTag.Player, moveDirection))
-        {
-            TeleportPlayer(player);
-        }
-        
-        if (CanMoveInDirection(moveDirection))
-        {
-            Move(moveDirection);
-        }
+        Direction moveDirection = CalculateDirectionToPlayer(player);
+        Move(moveDirection);
+    }
+    
+    private Direction CalculateDirectionToPlayer(Player player)
+    {
+        int dx = player.position.x - position.x;
+        int dy = player.position.y - position.y;
+        return Math.Abs(dx) > Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
     }
 }

@@ -11,6 +11,11 @@ public class Goblin : GameObject
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Green;
     public override DetectionTag GetDetectionTag() => DetectionTag.Goblin;
 
+    public override void PlayerInteraction(Player player)
+    {
+        player.Kill();
+    }
+
     private void SwitchDirection()
     {
         moveDirection = moveDirection == Direction.North ? Direction.South : Direction.North;
@@ -18,12 +23,6 @@ public class Goblin : GameObject
 
     public override void PerformTurnAction()
     {
-        if (DetectInDirection(DetectionTag.Player, moveDirection))
-        {
-            Player player = GetGameObjectInDirection(moveDirection) as Player;
-            player.Kill();
-        }
-        
         if (!DetectInDirection(DetectionTag.Empty, moveDirection))
         {
             SwitchDirection();

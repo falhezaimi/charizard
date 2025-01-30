@@ -31,9 +31,17 @@ public abstract class GameObject
     /// </summary>
     public abstract void PerformTurnAction();
 
+    public abstract void PlayerInteraction(Player player);
+
     public void Move(Direction moveDirection)
     {
         GridPosition desiredPosition = position + GetDirectionOffset(moveDirection);
+        
+        if (DetectInDirection(DetectionTag.Player, moveDirection))
+        {
+            Player player = GetGameObjectInDirection(moveDirection) as Player;
+            PlayerInteraction(player);
+        }
 
         if (CanMoveInDirection(moveDirection))
         {
