@@ -1,46 +1,47 @@
 namespace Cpsc370Final.Entities;
-
-public class Wraith : Enemy
+using Cpsc370Final.Core;
+public class Wraith : GameObject
 {
     private static Random rand = new Random();
+    private LevelGrid levelGrid;
+    private Player player;
 
-    public Wraith(GameObject[,] worldGrid, int x, int y) : base(worldGrid, x, y) { }
+    public Wraith(LevelGrid levelGrid, GridPosition position, Player player) : base(levelGrid, position)
+    {
+        this.levelGrid = levelGrid;
+        this.player = player;
+    }
 
     public override char GetAsciiCharacter() => 'W';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Cyan;
     public override DetectionTag GetDetectionTag() => DetectionTag.Goblin;
 
-    public override void Move(Player player)
+    private Direction DetermineBestDirection(Player player)
+    {
+        int dx = player.position.x - position.x;
+        int dy = player.position.y - position.y;
+        return Math.Abs(dx) > Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
+    }
+
+    private void TeleportPlayer(Player player)
+    {
+        player.position.x = rand.Next(1, levelGrid.GetWidth() - 1);
+        player.position.y = rand.Next(1, levelGrid.GetHeight() - 1);
+    }
+
+    public override void PerformTurnAction()
     {
         if (player == null) return;
 
         Direction moveDirection = DetermineBestDirection(player);
         if (CanMoveInDirection(moveDirection))
         {
-            MoveInDirection(moveDirection);
+            Move(moveDirection);
         }
 
-        if (positionX == player.positionX && positionY == player.positionY)
+        if (position == player.position)
         {
             TeleportPlayer(player);
         }
-    }
-
-    private Direction DetermineBestDirection(Player player)
-    {
-        int dx = player.positionX - positionX;
-        int dy = player.positionY - positionY;
-        return Math.Abs(dx) > Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
-    }
-
-    private void TeleportPlayer(Player player)
-    {
-        player.positionX = rand.Next(1, worldGrid.GetLength(1) - 1);
-        player.positionY = rand.Next(1, worldGrid.GetLength(0) - 1);
-    }
-
-    public override void PerformTurnAction()
-    {
-        Move(null);
     }
 }

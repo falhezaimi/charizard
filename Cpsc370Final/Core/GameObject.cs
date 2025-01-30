@@ -1,22 +1,20 @@
 ﻿using System.Numerics;
 
-namespace Cpsc370Final;
+namespace Cpsc370Final.Core;
 
 /// <summary>
 /// This class is what you inherit from when making any object that exists on the grid.
 /// </summary>
 public abstract class GameObject
 {
-    public GameObject[,] worldGrid;
-    public int positionX;
-    public int positionY;
+    private LevelGrid levelGrid;
+    public GridPosition position;
 
-    public GameObject(GameObject[,] worldGrid, int spawnPositionX, int spawnPositionY)
+    public GameObject(LevelGrid levelGrid, GridPosition spawnPosition)
     {
-        this.worldGrid = worldGrid;
-        this.positionX = spawnPositionX;
-        this.positionY = spawnPositionY;
-        worldGrid[spawnPositionY, spawnPositionX] = this;
+        this.levelGrid = levelGrid;
+        position = spawnPosition;
+        levelGrid.AddGameObjectToGrid(this);
     }
 
     public abstract char GetAsciiCharacter();
@@ -35,103 +33,54 @@ public abstract class GameObject
 
     public void Move(Direction moveDirection)
     {
-        int desiredPositionX = positionX;
-        int desiredPositionY = positionY;
-        
-        switch (moveDirection)
-        {
-            case Direction.North:
-                desiredPositionY -= 1;
-                break;
-            case Direction.East:
-                desiredPositionX += 1;
-                break;
-            case Direction.South:
-                desiredPositionY += 1;
-                break;
-            case Direction.West:
-                desiredPositionX -= 1;
-                break;
-        }
+        GridPosition desiredPosition = position + GetDirectionOffset(moveDirection);
 
         if (CanMoveInDirection(moveDirection))
         {
-            worldGrid[positionY, positionX] = null;
-            positionX = desiredPositionX;
-            positionY = desiredPositionY;
-            worldGrid[positionY, positionX] = this;
+            levelGrid.SetGameObjectPosition(this, desiredPosition);
         }
     }
 
     public bool CanMoveInDirection(Direction moveDirection)
     {
-        int desiredPositionX = positionX;
-        int desiredPositionY = positionY;
-        
-        switch (moveDirection)
-        {
-            case Direction.North:
-                desiredPositionY -= 1;
-                break;
-            case Direction.East:
-                desiredPositionX += 1;
-                break;
-            case Direction.South:
-                desiredPositionY += 1;
-                break;
-            case Direction.West:
-                desiredPositionX -= 1;
-                break;
-        }
+        GridPosition desiredPosition = position + GetDirectionOffset(moveDirection);
 
-        return IsPositionInBounds(desiredPositionX, desiredPositionY) &&
-               !IsPositionOccupied(desiredPositionX, desiredPositionY);
+        return levelGrid.IsPositionInBounds(desiredPosition) &&
+               !levelGrid.IsPositionOccupied(desiredPosition);
     }
 
     public bool DetectInDirection(DetectionTag tag, Direction direction)
     {
-        int detectPositionX = positionX;
-        int detectPositionY = positionY;
-        
-        switch (direction)
-        {
-            case Direction.North:
-                detectPositionY -= 1;
-                break;
-            case Direction.East:
-                detectPositionX += 1;
-                break;
-            case Direction.South:
-                detectPositionY += 1;
-                break;
-            case Direction.West:
-                detectPositionX -= 1;
-                break;
-        }
+        GridPosition detectPosition = position + GetDirectionOffset(direction);
 
-        if (!IsPositionInBounds(detectPositionX, detectPositionY))
+        if (!levelGrid.IsPositionInBounds(detectPosition))
         {
             return tag == DetectionTag.Wall;
         }
         
-        GameObject detectedGameObject = worldGrid[detectPositionY, detectPositionX];
-        if (detectedGameObject == null)
+        if (levelGrid.IsPositionEmpty(detectPosition))
         {
             return tag == DetectionTag.Empty;
         }
         
-        return worldGrid[detectPositionY, detectPositionX].GetDetectionTag() == tag;
+        GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPosition);
+        return detectedGameObject.GetDetectionTag() == tag;
     }
 
-    private bool IsPositionInBounds(int positionX, int positionY)
+    public GridPosition GetDirectionOffset(Direction direction)
     {
-        bool positionXInBounds = positionX >= 0 && positionX < worldGrid.GetLength(1);
-        bool positionYInBounds = positionY >= 0 && positionY < worldGrid.GetLength(0);
-        return positionXInBounds && positionYInBounds;
-    }
-    
-    private bool IsPositionOccupied(int positionX, int positionY)
-    {
-        return worldGrid[positionY, positionX] != null;
+        switch (direction)
+        {
+            case Direction.North:
+                return new GridPosition(0, -1);
+            case Direction.East:
+                return new GridPosition(1, 0);
+            case Direction.South:
+                return new GridPosition(0, 1);
+            case Direction.West:
+                return new GridPosition(-1, 0);
+            default:
+                return new GridPosition(0, 0);
+        }
     }
 }

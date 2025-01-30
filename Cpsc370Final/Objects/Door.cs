@@ -1,8 +1,10 @@
+using Cpsc370Final.Core;
+
 namespace Cpsc370Final.Objects;
 
 public class Door : GameObject
 {
-    public Door(GameObject[,] worldGrid, int x, int y) : base(worldGrid, x, y) { }
+    public Door(LevelGrid levelGrid, GridPosition position) : base(levelGrid, position) { }
 
     public override char GetAsciiCharacter() => 'D';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Magenta;

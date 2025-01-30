@@ -1,11 +1,12 @@
 ﻿namespace Cpsc370Final;
+using Cpsc370Final.Core;
 
 public class Player : GameObject
 {
+    public Player(LevelGrid levelGrid, GridPosition spawnPosition) : base(levelGrid, spawnPosition)
+    {
+    }
     public bool HasKey { get; private set; } = false; // ✅ Tracks if the player has picked up a key
-
-    public Player(GameObject[,] worldGrid, int spawnPositionX, int spawnPositionY) 
-        : base(worldGrid, spawnPositionX, spawnPositionY) { }
 
     public override char GetAsciiCharacter() => 'P';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.White;

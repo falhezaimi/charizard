@@ -1,11 +1,11 @@
 ﻿namespace Cpsc370Final;
-using Cpsc370Final.Entities;
+using Cpsc370Final.Core;
 using Cpsc370Final.Objects;
+using Cpsc370Final.Entities;
 
 class Program
 {
-    private static GameObject[,] worldGrid;
-    private static List<GameObject> gameObjects = new List<GameObject>();
+    private static LevelGrid levelGrid;
     private static Random rand = new Random();
 
     private static Player player;
@@ -27,26 +27,16 @@ class Program
 
     private static void PerformGameObjectTurnActions()
     {
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject gameObject in levelGrid.GetGameObjects())
         {
             gameObject.PerformTurnAction();
         }
     }
-
+    
     private static void GenerateMap()
     {
-        worldGrid = new GameObject[10, 20];
-
-        // Initialize empty grid
-        for (int i = 0; i < worldGrid.GetLength(0); i++)
-        {
-            for (int j = 0; j < worldGrid.GetLength(1); j++)
-            {
-                worldGrid[i, j] = null;
-            }
-        }
-
-        // Spawn all entities
+        levelGrid = new LevelGrid(20, 10);
+        
         SpawnPlayer();
         SpawnGoblins();
         SpawnSkeletons();
@@ -57,17 +47,20 @@ class Program
 
     private static void SpawnPlayer()
     {
-        int middleX = worldGrid.GetLength(1) / 2;
-        int middleY = worldGrid.GetLength(0) / 2;
-        player = new Player(worldGrid, middleX, middleY);
-        gameObjects.Add(player);
+        int middleX = (levelGrid.GetWidth() - 1) / 2;
+        int middleY = (levelGrid.GetHeight() - 1) / 2;
+        GridPosition spawnPosition = new GridPosition(middleX, middleY);
+        player = new Player(levelGrid, spawnPosition);
     }
-
+    
     private static void SpawnGoblins()
     {
-        for (int i = 0; i < 3; i++) // Adjust number as needed
+        for (int i = 0; i < 5; i++)
         {
-            SpawnRandomEntity(new Goblin(worldGrid, 0, 0));
+            GridPosition spawnPosition;
+            spawnPosition.x = rand.Next(1, levelGrid.GetWidth() - 1);
+            spawnPosition.y = rand.Next(1, levelGrid.GetHeight() - 1);   
+            GameObject goblin = new Goblin(levelGrid, spawnPosition);
         }
     }
 
@@ -75,7 +68,10 @@ class Program
     {
         for (int i = 0; i < 2; i++) // Adjust number as needed
         {
-            SpawnRandomEntity(new Skeleton(worldGrid, 0, 0));
+            GridPosition spawnPosition;
+            spawnPosition.x = rand.Next(1, levelGrid.GetWidth() - 1);
+            spawnPosition.y = rand.Next(1, levelGrid.GetHeight() - 1);   
+            GameObject skeleton = new Skeleton(levelGrid, spawnPosition);
         }
     }
 
@@ -83,136 +79,54 @@ class Program
     {
         for (int i = 0; i < 1; i++) // Adjust number as needed
         {
-            SpawnRandomEntity(new Wraith(worldGrid, 0, 0));
+            GridPosition spawnPosition;
+            spawnPosition.x = rand.Next(1, levelGrid.GetWidth() - 1);
+            spawnPosition.y = rand.Next(1, levelGrid.GetHeight() - 1);   
+            GameObject wraith = new Wraith(levelGrid, spawnPosition, player);
         }
     }
 
     private static void SpawnKey()
     {
-        SpawnRandomEntity(new Key(worldGrid, 0, 0));
+        GridPosition spawnPosition = new GridPosition(0, 0);
+        Key key = new Key(levelGrid, spawnPosition);
     }
 
     private static void SpawnDoor()
     {
-        exitDoor = new Door(worldGrid, rand.Next(1, worldGrid.GetLength(1) - 1), rand.Next(1, worldGrid.GetLength(0) - 1));
-        gameObjects.Add(exitDoor);
+        GridPosition spawnPosition = new GridPosition(levelGrid.GetWidth()-1, levelGrid.GetHeight()-1);
+        exitDoor = new Door(levelGrid, spawnPosition);
     }
 
-    private static void SpawnRandomEntity(GameObject entity)
-    {
-        int x, y;
-        do
-        {
-            x = rand.Next(1, worldGrid.GetLength(1) - 1);
-            y = rand.Next(1, worldGrid.GetLength(0) - 1);
-        } while (worldGrid[y, x] != null); // Ensure it spawns in an empty location
-
-        entity.positionX = x;
-        entity.positionY = y;
-        worldGrid[y, x] = entity;
-        gameObjects.Add(entity);
-    }
+    // private static void SpawnRandomEntity(GameObject entity)
+    // {
+    //     int x, y;
+    //     do
+    //     {
+    //         x = rand.Next(1, worldGrid.GetLength(1) - 1);
+    //         y = rand.Next(1, worldGrid.GetLength(0) - 1);
+    //     } while (worldGrid[y, x] != null); // Ensure it spawns in an empty location
+    //
+    //     entity.positionX = x;
+    //     entity.positionY = y;
+    //     worldGrid[y, x] = entity;
+    //     gameObjects.Add(entity);
+    // }
 
     private static void ProcessCommand(string command)
     {
-        command = command.ToLower().Trim();
+        command = command.ToLower();
+        command = command.Trim();
 
-        if (command == "w") MovePlayer(Direction.North);
-        else if (command == "a") MovePlayer(Direction.West);
-        else if (command == "s") MovePlayer(Direction.South);
-        else if (command == "d") MovePlayer(Direction.East);
+        if (command == "w") player.Move(Direction.North);
+        else if (command == "a") player.Move(Direction.West);
+        else if (command == "s") player.Move(Direction.South);
+        else if (command == "d") player.Move(Direction.East);
     }
-
-    private static void MovePlayer(Direction direction)
-    {
-        int newX = player.positionX;
-        int newY = player.positionY;
-
-        switch (direction)
-        {
-            case Direction.North: newY -= 1; break;
-            case Direction.South: newY += 1; break;
-            case Direction.East: newX += 1; break;
-            case Direction.West: newX -= 1; break;
-        }
-
-        // Prevent moving out of bounds
-        if (newX < 0 || newX >= worldGrid.GetLength(1) || newY < 0 || newY >= worldGrid.GetLength(0))
-        {
-            return;
-        }
-
-        GameObject destinationObject = worldGrid[newY, newX];
-
-        if (destinationObject is Key)
-        {
-            player.CollectKey();
-            gameObjects.Remove(destinationObject);
-            worldGrid[newY, newX] = null;
-        }
-        else if (destinationObject is Door && player.HasKey)
-        {
-            Console.Clear();
-            Console.WriteLine("You escaped the dungeon! You win!");
-            Environment.Exit(0);
-        }
-        else if (destinationObject is Goblin || destinationObject is Skeleton || destinationObject is Wraith)
-        {
-            Console.Clear();
-            Console.WriteLine("You were caught by a monster! Game Over.");
-            Environment.Exit(0);
-        }
-
-        // Move player
-        worldGrid[player.positionY, player.positionX] = null;
-        player.positionX = newX;
-        player.positionY = newY;
-        worldGrid[newY, newX] = player;
-    }
-
-    private static void Render()
-    {
+    
+    private static void Render() {
         Console.Clear();
-        Console.WriteLine("Dungeon Escape:\n");
-
-        Console.ForegroundColor = ConsoleColor.Gray;
-        Console.Write("/  ");
-        for (int i = 0; i < worldGrid.GetLength(1); i++)
-        {
-            Console.Write("-  ");
-        }
-        Console.WriteLine("\\");
-
-        for (int i = 0; i < worldGrid.GetLength(0); i++)
-        {
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write("|  ");
-            for (int j = 0; j < worldGrid.GetLength(1); j++)
-            {
-                GameObject gameObject = worldGrid[i, j];
-                if (gameObject != null)
-                {
-                    Console.ForegroundColor = gameObject.GetAsciiColor();
-                    Console.Write(gameObject.GetAsciiCharacter());
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    Console.Write('.');
-                }
-                Console.Write("  ");
-            }
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write("|");
-            Console.WriteLine();
-        }
-
-        Console.ForegroundColor = ConsoleColor.Gray;
-        Console.Write("\\  ");
-        for (int i = 0; i < worldGrid.GetLength(1); i++)
-        {
-            Console.Write("-  ");
-        }
-        Console.Write("/");
+        Console.WriteLine("Game Title:\n");
+        levelGrid.Render();
     }
 }
