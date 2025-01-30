@@ -31,10 +31,14 @@ class Program
 
     private static void NextFloor()
     {
-        GameUI.IncreaseFloor(); // Increase the floor number
+        Console.Clear();
         GameUI.DisplayMessage($"You completed Floor {GameUI.FloorNumber - 1}! Onto Floor {GameUI.FloorNumber}.");
 
-        GenerateMap(); // Generate a new dungeon floor
+        // Remove the old player from the grid before regenerating the dungeon
+        levelGrid.RemoveGameObjectFromGrid(player);
+
+        // Regenerate the map, but keep the same player
+        GenerateMap();
     }
 
     private static void EndGame()
@@ -55,8 +59,19 @@ class Program
     private static void GenerateMap()
     {
         levelGrid = new LevelGrid(20, 10);
-        
-        SpawnPlayer();
+
+        // Keep the same player if they exist, otherwise create a new one
+        if (player == null)
+        {
+            SpawnPlayer(); // First dungeon run: create the player
+        }
+        else
+        {
+            // Move the existing player to a new valid spawn point on map
+            GridPosition newPlayerPosition = levelGrid.GetRandomEmptyPosition();
+            levelGrid.SetGameObjectPosition(player, newPlayerPosition);
+        }
+
         SpawnGoblins();
         SpawnSkeletons();
         SpawnWraiths();
