@@ -13,7 +13,10 @@ public static class GameUI
     public static void DisplayUI(LevelGrid levelGrid, Player player, int keysToCollect)
     {
         Console.Clear();
-        Console.WriteLine($"Floor: {FloorNumber}\tKeys: {player.HeldKeys}/{keysToCollect}");
+        Console.Write($"Floor: {FloorNumber}\t");
+
+        Console.ForegroundColor = (player.HeldKeys >= keysToCollect) ? ConsoleColor.Magenta : ConsoleColor.Gray;
+        Console.Write($"Keys: {player.HeldKeys}/{keysToCollect}\n");
 
         // Renders the level grid
         levelGrid.Render();
