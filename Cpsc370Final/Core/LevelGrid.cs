@@ -2,8 +2,8 @@
 
 public class LevelGrid
 {
-    private static GameObject[,] levelGrid;
-    private static List<GameObject> gameObjects = new List<GameObject>();
+    private GameObject[,] levelGrid;
+    private List<GameObject> gameObjects = new List<GameObject>();
     Random random = new Random();
 
     public LevelGrid(int width, int height)
