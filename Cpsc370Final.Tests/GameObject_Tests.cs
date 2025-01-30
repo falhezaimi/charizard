@@ -30,4 +30,25 @@ public class GameObject_Tests
         Assert.True(goblin.position == new GridPosition(0, 0));
         Assert.DoesNotContain(player, levelGrid.GetGameObjects());
     }
+
+    [Fact]
+    private void TestDetectInDirectionRaycastWhenLineOfSightUnblocked()
+    {
+        LevelGrid levelGrid = new LevelGrid(5, 5);
+        Player player = new Player(levelGrid, new GridPosition(0, 0));
+        Goblin goblin = new Goblin(levelGrid, new GridPosition(4, 0));
+        
+        Assert.True(goblin.DetectInDirectionRaycast(DetectionTag.Player, Direction.West));
+    }
+    
+    [Fact]
+    private void TestDetectInDirectionRaycastWhenLineOfSightBlocked()
+    {
+        LevelGrid levelGrid = new LevelGrid(5, 5);
+        Player player = new Player(levelGrid, new GridPosition(0, 0));
+        Key key =  new Key(levelGrid, new GridPosition(2, 0));
+        Goblin goblin = new Goblin(levelGrid, new GridPosition(4, 0));
+        
+        Assert.False(goblin.DetectInDirectionRaycast(DetectionTag.Player, Direction.West));
+    }
 }

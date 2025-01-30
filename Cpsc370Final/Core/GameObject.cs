@@ -75,6 +75,22 @@ public abstract class GameObject
         GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPosition);
         return detectedGameObject.GetDetectionTag() == tag;
     }
+    
+    public bool DetectInDirectionRaycast(DetectionTag tag, Direction direction)
+    {
+        GridPosition detectPosition = position + GetDirectionOffset(direction);
+        while (levelGrid.IsPositionInBounds(detectPosition))
+        {
+            if (levelGrid.IsPositionOccupied(detectPosition))
+            {
+                GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPosition);
+                return detectedGameObject.GetDetectionTag() == tag;
+            }
+            detectPosition += GetDirectionOffset(direction);
+        }
+
+        return false;
+    }
 
     public GameObject GetGameObjectInDirection(Direction direction)
     {
