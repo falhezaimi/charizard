@@ -58,10 +58,20 @@ class Program
 
     private static void SpawnPlayer()
     {
-        int middleX = (levelGrid.GetWidth() - 1) / 2;
-        int middleY = (levelGrid.GetHeight() - 1) / 2;
-        GridPosition spawnPosition = new GridPosition(middleX, middleY);
-        player = new Player(levelGrid, spawnPosition);
+        GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
+        if (player == null)
+        {
+            // Create the player for the first time
+            player = new Player(levelGrid, spawnPosition);
+        }
+        else
+        {
+            // If player already exists, just reposition him
+            // the player needs to be preserved between levels
+            player.position = spawnPosition;
+            player.levelGrid = levelGrid;
+            levelGrid.AddGameObjectToGrid(player);
+        }
     }
     
     private static void SpawnGoblins()
