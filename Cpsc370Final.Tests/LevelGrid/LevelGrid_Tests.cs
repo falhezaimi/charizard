@@ -3,6 +3,19 @@
 public class LevelGrid_Tests
 {
     [Fact]
+    private void TestSetGameObjectPosition()
+    {
+        LevelGrid levelGrid = new LevelGrid(20, 10);
+        GridPosition spawnPosition = new GridPosition(0, 0);
+        GridPosition newPosition = new GridPosition(5, 5);
+        Player player = new Player(levelGrid, spawnPosition);
+        
+        levelGrid.SetGameObjectPosition(player, newPosition);
+        Assert.True(levelGrid.IsPositionEmpty(spawnPosition));
+        Assert.True(levelGrid.IsPositionOccupied(newPosition));
+    }
+    
+    [Fact]
     private void TestIsPositionInBounds()
     {
         LevelGrid levelGrid = new LevelGrid(20, 10);

@@ -20,7 +20,7 @@ public class LevelGrid
 
     public void AddGameObjectToGrid(GameObject gameObject)
     {
-        levelGrid[gameObject.position.y, gameObject.position.x] = gameObject;
+        SetGameObjectPosition(gameObject, gameObject.position);
         gameObjects.Add(gameObject);
     }
 
