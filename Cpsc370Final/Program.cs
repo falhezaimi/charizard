@@ -11,18 +11,28 @@ class Program
     private static Player player;
     private static Door exitDoor;
 
+    private static bool gameOver = false;
+
     private static void Main(string[] args)
     {
         GenerateMap();
+        player.OnDied += EndGame;
 
-        while (true)
+        while (!gameOver)
         {
             Render();
             Console.WriteLine("\nEnter a command (W/A/S/D to move):");
             string command = Console.ReadLine();
-            ProcessCommand(command);
+            player.ProcessCommand(command);
             PerformGameObjectTurnActions();
         }
+    }
+
+    private static void EndGame()
+    {
+        Console.Clear();
+        Console.WriteLine("\nGame Over! Press any key to return to Main Menu...");
+        gameOver = true;
     }
 
     private static void PerformGameObjectTurnActions()
@@ -112,17 +122,6 @@ class Program
     //     worldGrid[y, x] = entity;
     //     gameObjects.Add(entity);
     // }
-
-    private static void ProcessCommand(string command)
-    {
-        command = command.ToLower();
-        command = command.Trim();
-
-        if (command == "w") player.Move(Direction.North);
-        else if (command == "a") player.Move(Direction.West);
-        else if (command == "s") player.Move(Direction.South);
-        else if (command == "d") player.Move(Direction.East);
-    }
     
     private static void Render() {
         Console.Clear();

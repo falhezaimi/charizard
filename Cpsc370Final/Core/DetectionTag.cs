@@ -6,4 +6,5 @@
      Wall,
      Empty,
      Goblin,
+     Key,
  }

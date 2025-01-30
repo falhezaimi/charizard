@@ -24,6 +24,12 @@ public class LevelGrid
         gameObjects.Add(gameObject);
     }
 
+    public void RemoveGameObjectFromGrid(GameObject gameObject)
+    {
+        SetGameObjectAtPosition(gameObject.position, null);
+        gameObjects.Remove(gameObject);
+    }
+
     public void SetGameObjectPosition(GameObject gameObject, GridPosition newPosition)
     {
         int oldX = gameObject.position.x;

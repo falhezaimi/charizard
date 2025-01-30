@@ -7,7 +7,7 @@ namespace Cpsc370Final.Core;
 /// </summary>
 public abstract class GameObject
 {
-    private LevelGrid levelGrid;
+    public LevelGrid levelGrid;
     public GridPosition position;
 
     public GameObject(LevelGrid levelGrid, GridPosition spawnPosition)
@@ -65,6 +65,13 @@ public abstract class GameObject
         
         GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPosition);
         return detectedGameObject.GetDetectionTag() == tag;
+    }
+
+    public GameObject GetGameObjectInDirection(Direction direction)
+    {
+        GridPosition detectPosition = position + GetDirectionOffset(direction);
+        if (!levelGrid.IsPositionInBounds(detectPosition)) return null;
+        return levelGrid.GetGameObjectAtPosition(detectPosition);
     }
 
     public GridPosition GetDirectionOffset(Direction direction)

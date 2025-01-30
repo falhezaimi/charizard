@@ -8,7 +8,7 @@ public class Key : GameObject
 
     public override char GetAsciiCharacter() => 'K';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Yellow;
-    public override DetectionTag GetDetectionTag() => DetectionTag.Empty;
+    public override DetectionTag GetDetectionTag() => DetectionTag.Key;
 
     public override void PerformTurnAction() { }
 }

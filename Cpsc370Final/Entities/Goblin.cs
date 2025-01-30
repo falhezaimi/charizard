@@ -18,10 +18,17 @@ public class Goblin : GameObject
 
     public override void PerformTurnAction()
     {
+        if (DetectInDirection(DetectionTag.Player, moveDirection))
+        {
+            Player player = GetGameObjectInDirection(moveDirection) as Player;
+            player.Kill();
+        }
+        
         if (!DetectInDirection(DetectionTag.Empty, moveDirection))
         {
             SwitchDirection();
         }
+        
         Move(moveDirection);
     }
 }
