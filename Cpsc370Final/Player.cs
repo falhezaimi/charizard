@@ -29,6 +29,8 @@ public class Player : GameObject
             GameObject gameObject = GetGameObjectInDirection(moveDirection);
             if (gameObject != null) gameObject.PlayerInteraction(this);
         }
+        
+        desiredPosition = position + GetDirectionOffset(moveDirection);
 
         if (CanMoveInDirection(moveDirection))
         {
