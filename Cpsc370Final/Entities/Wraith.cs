@@ -13,9 +13,10 @@ public class Wraith : GameObject
     }
 
     public override char GetAsciiCharacter() => 'W';
-    public override ConsoleColor GetAsciiColor() => ConsoleColor.Cyan;
+    public override ConsoleColor GetAsciiColor() => (IsActive()) ? ConsoleColor.Cyan : ConsoleColor.Gray;
     public override DetectionTag GetDetectionTag() => DetectionTag.Wraith;
     
+    private int teleportCooldown = 0;
     public override void PlayerInteraction(Player player)
     {
         TeleportPlayer(player);
@@ -25,13 +26,17 @@ public class Wraith : GameObject
     {
         GridPosition randomPosition = levelGrid.GetRandomEmptyPosition();
         levelGrid.SetGameObjectPosition(player, randomPosition);
+        teleportCooldown = 7;
     }
-    
     public override void PerformTurnAction()
     {
+        if (teleportCooldown > 0) { teleportCooldown--; return; }
+        
         if (player == null) return;
 
         Direction moveDirection = PathfindToPosition(player.position);
         Move(moveDirection);
     }
+
+    public bool IsActive() => teleportCooldown == 0;
 }
