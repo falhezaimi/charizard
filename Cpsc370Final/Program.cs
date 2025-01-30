@@ -89,7 +89,7 @@ class Program
         for (int i = 0; i < 2; i++)
         {
             GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
-            GameObject skeleton = new Skeleton(levelGrid, spawnPosition);
+            GameObject skeleton = new Skeleton(levelGrid, spawnPosition, player);
         }
     }
 
