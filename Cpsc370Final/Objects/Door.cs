@@ -4,16 +4,28 @@ namespace Cpsc370Final.Objects;
 
 public class Door : GameObject
 {
-    public Door(LevelGrid levelGrid, GridPosition position) : base(levelGrid, position) { }
+    private Player player;
+    private int keysToUnlock;
+
+    public Door(LevelGrid levelGrid, GridPosition position, Player player, int keysToUnlock) : base(levelGrid, position)
+    {
+        this.player = player;
+        this.keysToUnlock = keysToUnlock;
+    }
 
     public override char GetAsciiCharacter() => 'D';
-    public override ConsoleColor GetAsciiColor() => ConsoleColor.Magenta;
+    public override ConsoleColor GetAsciiColor() => (IsLocked()) ? ConsoleColor.Gray: ConsoleColor.Magenta;
     public override DetectionTag GetDetectionTag() => DetectionTag.Door;
     
     public override void PlayerInteraction(Player player)
     {
-        player.EnterDoor();
+        if (!IsLocked()) player.EnterDoor();
     }
     
     public override void PerformTurnAction() { }
+
+    public bool IsLocked()
+    {
+        return player.HeldKeys < keysToUnlock;
+    }
 }

@@ -9,6 +9,7 @@ class Program
     private static Random rand = new Random();
     private static Player player;
     private static Door exitDoor;
+    private static int keysToCollect;
     private static bool gameOver = false;
 
     private static void Main(string[] args)
@@ -66,10 +67,10 @@ class Program
         }
         else
         {
-            // If player already exists, just reposition him
-            // the player needs to be preserved between levels
+            // If player already exists, reuse him in the next level
             player.position = spawnPosition;
             player.levelGrid = levelGrid;
+            player.ResetKeys();
             levelGrid.AddGameObjectToGrid(player);
         }
     }
@@ -105,11 +106,12 @@ class Program
     {
         GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
         Key key = new Key(levelGrid, spawnPosition);
+        keysToCollect = 1;
     }
 
     private static void SpawnDoor()
     {
         GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
-        exitDoor = new Door(levelGrid, spawnPosition);
+        exitDoor = new Door(levelGrid, spawnPosition, player, keysToCollect);
     }
 }

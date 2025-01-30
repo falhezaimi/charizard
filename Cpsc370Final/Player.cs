@@ -5,6 +5,7 @@ public class Player : GameObject
 {
     public event Action OnDied;
     public event Action OnEnteredDoor;
+    public event Action OnCollectedKey;
     public Player(LevelGrid levelGrid, GridPosition spawnPosition) : base(levelGrid, spawnPosition)
     {
     }
@@ -54,6 +55,11 @@ public class Player : GameObject
     public void AddKey()
     {
         HeldKeys++;
+    }
+
+    public void ResetKeys()
+    {
+        HeldKeys = 0;
     }
 
     public void EnterDoor()
