@@ -2,10 +2,10 @@
 
 public class Player : GameObject
 {
-    public Player(GameObject[,] worldGrid, int spawnPositionX, int spawnPositionY) : base(worldGrid, spawnPositionX,
-        spawnPositionY)
-    {
-    }
+    public bool HasKey { get; private set; } = false; // ✅ Tracks if the player has picked up a key
+
+    public Player(GameObject[,] worldGrid, int spawnPositionX, int spawnPositionY) 
+        : base(worldGrid, spawnPositionX, spawnPositionY) { }
 
     public override char GetAsciiCharacter() => 'P';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.White;
@@ -13,6 +13,12 @@ public class Player : GameObject
 
     public override void PerformTurnAction()
     {
-        // Player doesn't actually do anything on turn action, their actions are treated differently as a special case
+        // Players don't act automatically, so no need for an AI action.
+    }
+
+    // Method to collect a key
+    public void CollectKey()
+    {
+        HasKey = true;
     }
 }
