@@ -21,7 +21,7 @@ class Program
         while (!gameOver)
         {
             // Display the UI with Floor Number
-            GameUI.DisplayUI(levelGrid);
+            GameUI.DisplayUI(levelGrid, player, keysToCollect);
             
             Console.WriteLine("\nEnter a command (W/A/S/D to move):");
             string command = Console.ReadLine();

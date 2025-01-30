@@ -10,10 +10,10 @@ public static class GameUI
         FloorNumber++;
     }
 
-    public static void DisplayUI(LevelGrid levelGrid)
+    public static void DisplayUI(LevelGrid levelGrid, Player player, int keysToCollect)
     {
         Console.Clear();
-        Console.WriteLine($"Floor: {FloorNumber}\n");
+        Console.WriteLine($"Floor: {FloorNumber}\tKeys: {player.HeldKeys}/{keysToCollect}");
 
         // Renders the level grid
         levelGrid.Render();
