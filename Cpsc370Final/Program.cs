@@ -50,10 +50,9 @@ class Program
         levelGrid = new LevelGrid(20, 10);
         
         SpawnPlayer();
-        // SpawnGoblins();
-        // SpawnSkeletons();
-        // SpawnWraiths();
-        SpawnBulls();
+        SpawnGoblins();
+        SpawnSkeletons();
+        SpawnWraiths();
         SpawnKey();
         SpawnDoor();
     }

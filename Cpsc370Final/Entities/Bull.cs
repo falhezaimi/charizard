@@ -8,10 +8,10 @@ public class Bull : GameObject
     private Player player;
 
     private Direction chargeDirection;
-    private int chargeActivationRange = 4;
-    private int chargeRangeMax = 6;
+    private int chargeActivationRange = 5;
+    private int chargeRangeMax = 8;
     
-    private int cooldownTurnDuration = 3;
+    private int cooldownTurnDuration = 4;
     private int cooldownCounter = 0;
 
     private enum State
@@ -55,7 +55,7 @@ public class Bull : GameObject
         switch (currentState)
         {
             case State.Tracking:
-                Direction moveDirection = calculateMoveDirection();
+                Direction moveDirection = PathfindAlignWithPosition(player.position);
                 Move(moveDirection);
                 CheckIfShouldCharge();
                 break;
@@ -66,18 +66,6 @@ public class Bull : GameObject
                 cooldownCounter++;
                 if (cooldownCounter >= cooldownTurnDuration) currentState = State.Tracking;
                 break;
-        }
-    }
-
-    private Direction calculateMoveDirection()
-    {
-        if (!IsPlayerInChargingRange())
-        {
-            return PathfindToPosition(player.position);
-        }
-        else
-        {
-            return PathfindAlignWithPosition(player.position);
         }
     }
 

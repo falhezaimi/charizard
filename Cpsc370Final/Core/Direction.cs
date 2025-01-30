@@ -6,4 +6,5 @@ public enum Direction
     East,
     South,
     West,
+    None,
 }

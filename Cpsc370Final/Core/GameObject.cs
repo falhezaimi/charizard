@@ -101,16 +101,48 @@ public abstract class GameObject
     
     public Direction PathfindToPosition(GridPosition targetPosition)
     {
+        Direction direction;
         int dx = targetPosition.x - position.x;
         int dy = targetPosition.y - position.y;
-        return Math.Abs(dx) > Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
+        if (Math.Abs(dx) < Math.Abs(dy))
+        {
+            direction = dy > 0 ? Direction.South : Direction.North;
+        }
+        else
+        {
+            direction = dx > 0 ? Direction.East : Direction.West;
+        }
+        return direction;
     }
     
     public Direction PathfindAlignWithPosition(GridPosition targetPosition)
     {
+        Direction direction = Direction.None;
         int dx = targetPosition.x - position.x;
         int dy = targetPosition.y - position.y;
-        return Math.Abs(dx) < Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
+        if (Math.Abs(dx) < Math.Abs(dy))
+        {
+            if (dx == 0)
+            {
+                direction = dy > 0 ? Direction.South : Direction.North;
+            }
+            else
+            {
+                direction = dx > 0 ? Direction.East : Direction.West;
+            }
+        }
+        else
+        {
+            if (dy == 0)
+            {
+                direction = dx > 0 ? Direction.East : Direction.West;
+            }
+            else
+            {
+                direction = dy > 0 ? Direction.South : Direction.North;
+            }
+        } 
+        return direction;
     }
 
     public GridPosition GetDirectionOffset(Direction direction)
@@ -125,6 +157,8 @@ public abstract class GameObject
                 return new GridPosition(0, 1);
             case Direction.West:
                 return new GridPosition(-1, 0);
+            case Direction.None:
+                return new GridPosition(0, 0);
             default:
                 return new GridPosition(0, 0);
         }
