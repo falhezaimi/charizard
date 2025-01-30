@@ -9,6 +9,7 @@
      Wraith,
      Skeleton,
      Bull,
+     Bat,
      Key,
      Door,
  }
