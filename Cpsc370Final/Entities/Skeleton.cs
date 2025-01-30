@@ -3,37 +3,36 @@ using Cpsc370Final.Core;
 public class Skeleton : GameObject
 {
     private static Random rand = new Random();
+    private Player player;
 
-    public Skeleton(LevelGrid levelGrid, GridPosition position) : base(levelGrid, position) { }
+    public Skeleton(LevelGrid levelGrid, GridPosition position, Player player) : base(levelGrid, position)
+    {
+        this.player = player;
+    }
 
     public override char GetAsciiCharacter() => 'S';
-    public override ConsoleColor GetAsciiColor() => ConsoleColor.Red;
+    public override ConsoleColor GetAsciiColor() => (WillMoveNextTurn()) ? ConsoleColor.DarkRed : ConsoleColor.Red;
     public override DetectionTag GetDetectionTag() => DetectionTag.Skeleton;
+    
+    public override void PlayerInteraction(Player player)
+    {
+        player.Kill();
+    }
 
+    private int moveCooldown = 2;
     public override void PerformTurnAction()
     {
-        Direction moveDirection = rand.Next(2) == 0 ? Direction.East : Direction.West;
+        moveCooldown--;
+        if (moveCooldown == 0)
+        {
+            Direction moveDirection = PathfindToPosition(player.position);
+            Move(moveDirection);
+            moveCooldown = 2;
+        }
+    }
 
-        if (CanMoveInDirection(moveDirection))
-        {
-            Move(moveDirection);
-            
-            if (DetectInDirection(DetectionTag.Player, moveDirection))
-            {
-                Player player = GetGameObjectInDirection(moveDirection) as Player;
-                player.Kill();
-            }
-        }
-        
-        if (CanMoveInDirection(moveDirection))
-        {
-            Move(moveDirection);
-                
-            if (DetectInDirection(DetectionTag.Player, moveDirection))
-            {
-                Player player = GetGameObjectInDirection(moveDirection) as Player;
-                player.Kill();
-            }
-        }
+    public bool WillMoveNextTurn()
+    {
+        return moveCooldown <= 1;
     }
 }

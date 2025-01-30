@@ -2,8 +2,9 @@
 
 public class LevelGrid
 {
-    private static GameObject[,] levelGrid;
-    private static List<GameObject> gameObjects = new List<GameObject>();
+    private GameObject[,] levelGrid;
+    private List<GameObject> gameObjects = new List<GameObject>();
+    private List<GameObject> gameObjectsToRemove = new List<GameObject>();
     Random random = new Random();
 
     public LevelGrid(int width, int height)
@@ -28,7 +29,8 @@ public class LevelGrid
     public void RemoveGameObjectFromGrid(GameObject gameObject)
     {
         SetGameObjectAtPosition(gameObject.position, null);
-        gameObjects.Remove(gameObject);
+        gameObjectsToRemove.Add(gameObject);
+        gameObject.isMarkedForDeletion = true;
     }
 
     public void SetGameObjectPosition(GameObject gameObject, GridPosition newPosition)
@@ -78,6 +80,23 @@ public class LevelGrid
         } while (IsPositionOccupied(randomPosition));
         return randomPosition;
     }
+    
+    public void PerformGameObjectTurnActions()
+    {
+        foreach (GameObject gameObject in gameObjects)
+        {
+            if (!gameObject.isMarkedForDeletion) gameObject.PerformTurnAction();
+        }
+        RemoveGameObjectsMarkedForDeletion();
+    }
+
+    private void RemoveGameObjectsMarkedForDeletion()
+    {
+        foreach (GameObject gameObject in gameObjectsToRemove)
+        {
+            gameObjects.Remove(gameObject);
+        }
+    }
 
     public void Render()
     {
@@ -124,5 +143,5 @@ public class LevelGrid
     
     public int GetWidth() => levelGrid.GetLength(1);
     public int GetHeight() => levelGrid.GetLength(0);
-    public List<GameObject> GetGameObjects() => gameObjects;
+    public List<GameObject> GetGameObjects() => gameObjects.Where((gameObject) => !gameObject.isMarkedForDeletion).ToList();
 }

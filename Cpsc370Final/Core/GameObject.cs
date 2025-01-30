@@ -9,6 +9,7 @@ public abstract class GameObject
 {
     public LevelGrid levelGrid;
     public GridPosition position;
+    public bool isMarkedForDeletion = false;
 
     public GameObject(LevelGrid levelGrid, GridPosition spawnPosition)
     {
@@ -31,9 +32,17 @@ public abstract class GameObject
     /// </summary>
     public abstract void PerformTurnAction();
 
+    public abstract void PlayerInteraction(Player player);
+
     public void Move(Direction moveDirection)
     {
         GridPosition desiredPosition = position + GetDirectionOffset(moveDirection);
+        
+        if (DetectInDirection(DetectionTag.Player, moveDirection))
+        {
+            Player player = GetGameObjectInDirection(moveDirection) as Player;
+            PlayerInteraction(player);
+        }
 
         if (CanMoveInDirection(moveDirection))
         {
@@ -66,12 +75,35 @@ public abstract class GameObject
         GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPosition);
         return detectedGameObject.GetDetectionTag() == tag;
     }
+    
+    public bool DetectInDirectionRaycast(DetectionTag tag, Direction direction)
+    {
+        GridPosition detectPosition = position + GetDirectionOffset(direction);
+        while (levelGrid.IsPositionInBounds(detectPosition))
+        {
+            if (levelGrid.IsPositionOccupied(detectPosition))
+            {
+                GameObject detectedGameObject = levelGrid.GetGameObjectAtPosition(detectPosition);
+                return detectedGameObject.GetDetectionTag() == tag;
+            }
+            detectPosition += GetDirectionOffset(direction);
+        }
+
+        return false;
+    }
 
     public GameObject GetGameObjectInDirection(Direction direction)
     {
         GridPosition detectPosition = position + GetDirectionOffset(direction);
         if (!levelGrid.IsPositionInBounds(detectPosition)) return null;
         return levelGrid.GetGameObjectAtPosition(detectPosition);
+    }
+    
+    public Direction PathfindToPosition(GridPosition targetPosition)
+    {
+        int dx = targetPosition.x - position.x;
+        int dy = targetPosition.y - position.y;
+        return Math.Abs(dx) > Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
     }
 
     public GridPosition GetDirectionOffset(Direction direction)
