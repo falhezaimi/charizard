@@ -8,7 +8,7 @@ public class Door : GameObject
 
     public override char GetAsciiCharacter() => 'D';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Magenta;
-    public override DetectionTag GetDetectionTag() => DetectionTag.Wall;
+    public override DetectionTag GetDetectionTag() => DetectionTag.Door;
     
     public override void PerformTurnAction() { }
 }

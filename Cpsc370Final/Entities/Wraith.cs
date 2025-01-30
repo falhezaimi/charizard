@@ -14,7 +14,7 @@ public class Wraith : GameObject
 
     public override char GetAsciiCharacter() => 'W';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Cyan;
-    public override DetectionTag GetDetectionTag() => DetectionTag.Goblin;
+    public override DetectionTag GetDetectionTag() => DetectionTag.Wraith;
 
     private Direction DetermineBestDirection(Player player)
     {
@@ -25,8 +25,8 @@ public class Wraith : GameObject
 
     private void TeleportPlayer(Player player)
     {
-        player.position.x = rand.Next(1, levelGrid.GetWidth() - 1);
-        player.position.y = rand.Next(1, levelGrid.GetHeight() - 1);
+        GridPosition randomPosition = levelGrid.GetRandomEmptyPosition();
+        levelGrid.SetGameObjectPosition(player, randomPosition);
     }
 
     public override void PerformTurnAction()
@@ -34,14 +34,15 @@ public class Wraith : GameObject
         if (player == null) return;
 
         Direction moveDirection = DetermineBestDirection(player);
+        
+        if (DetectInDirection(DetectionTag.Player, moveDirection))
+        {
+            TeleportPlayer(player);
+        }
+        
         if (CanMoveInDirection(moveDirection))
         {
             Move(moveDirection);
-        }
-
-        if (position == player.position)
-        {
-            TeleportPlayer(player);
         }
     }
 }

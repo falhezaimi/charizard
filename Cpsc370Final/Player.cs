@@ -4,6 +4,7 @@ using Cpsc370Final.Core;
 public class Player : GameObject
 {
     public event Action OnDied;
+    public event Action OnEnteredDoor;
     public Player(LevelGrid levelGrid, GridPosition spawnPosition) : base(levelGrid, spawnPosition)
     {
     }
@@ -23,10 +24,26 @@ public class Player : GameObject
             levelGrid.RemoveGameObjectFromGrid(key);
             HeldKeys++;
         }
+        
+        if (DetectInDirection(DetectionTag.Door, moveDirection))
+        {
+            OnEnteredDoor?.Invoke();
+        }
 
         if (DetectInDirection(DetectionTag.Goblin, moveDirection))
         {
             Kill();
+        }
+        
+        if (DetectInDirection(DetectionTag.Skeleton, moveDirection))
+        {
+            Kill();
+        }
+        
+        if (DetectInDirection(DetectionTag.Wraith, moveDirection))
+        {
+            GridPosition randomPosition = levelGrid.GetRandomEmptyPosition();
+            levelGrid.SetGameObjectPosition(this, randomPosition);
         }
 
         if (CanMoveInDirection(moveDirection))

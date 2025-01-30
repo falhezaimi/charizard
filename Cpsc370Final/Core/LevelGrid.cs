@@ -4,6 +4,7 @@ public class LevelGrid
 {
     private static GameObject[,] levelGrid;
     private static List<GameObject> gameObjects = new List<GameObject>();
+    Random random = new Random();
 
     public LevelGrid(int width, int height)
     {
@@ -65,6 +66,17 @@ public class LevelGrid
     public bool IsPositionOccupied(GridPosition position)
     {
         return GetGameObjectAtPosition(position) != null;
+    }
+
+    public GridPosition GetRandomEmptyPosition()
+    {
+        GridPosition randomPosition = new GridPosition();
+        do
+        {
+            randomPosition.x = random.Next(0, GetWidth());
+            randomPosition.y = random.Next(0, GetHeight());
+        } while (IsPositionOccupied(randomPosition));
+        return randomPosition;
     }
 
     public void Render()

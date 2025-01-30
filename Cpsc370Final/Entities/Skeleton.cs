@@ -8,7 +8,7 @@ public class Skeleton : GameObject
 
     public override char GetAsciiCharacter() => 'S';
     public override ConsoleColor GetAsciiColor() => ConsoleColor.Red;
-    public override DetectionTag GetDetectionTag() => DetectionTag.Goblin;
+    public override DetectionTag GetDetectionTag() => DetectionTag.Skeleton;
 
     public override void PerformTurnAction()
     {
@@ -17,9 +17,22 @@ public class Skeleton : GameObject
         if (CanMoveInDirection(moveDirection))
         {
             Move(moveDirection);
-            if (CanMoveInDirection(moveDirection))
+            
+            if (DetectInDirection(DetectionTag.Player, moveDirection))
             {
-                Move(moveDirection);
+                Player player = GetGameObjectInDirection(moveDirection) as Player;
+                player.Kill();
+            }
+        }
+        
+        if (CanMoveInDirection(moveDirection))
+        {
+            Move(moveDirection);
+                
+            if (DetectInDirection(DetectionTag.Player, moveDirection))
+            {
+                Player player = GetGameObjectInDirection(moveDirection) as Player;
+                player.Kill();
             }
         }
     }

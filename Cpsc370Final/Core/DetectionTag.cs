@@ -6,5 +6,8 @@
      Wall,
      Empty,
      Goblin,
+     Wraith,
+     Skeleton,
      Key,
+     Door,
  }

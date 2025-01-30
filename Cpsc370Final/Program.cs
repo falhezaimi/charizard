@@ -17,6 +17,7 @@ class Program
     {
         GenerateMap();
         player.OnDied += EndGame;
+        player.OnEnteredDoor += NextFloor;
 
         while (!gameOver)
         {
@@ -26,6 +27,13 @@ class Program
             player.ProcessCommand(command);
             PerformGameObjectTurnActions();
         }
+    }
+
+    private static void NextFloor()
+    {
+        Console.Clear();
+        Console.WriteLine("\nYou entered the door! Somebody code the NextFloor function in Program to make this generate a new level.");
+        gameOver = true;
     }
 
     private static void EndGame()
