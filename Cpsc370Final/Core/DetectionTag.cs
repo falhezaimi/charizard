@@ -8,6 +8,7 @@
      Goblin,
      Wraith,
      Skeleton,
+     Bull,
      Key,
      Door,
  }

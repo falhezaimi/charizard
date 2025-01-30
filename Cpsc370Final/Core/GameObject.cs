@@ -105,6 +105,13 @@ public abstract class GameObject
         int dy = targetPosition.y - position.y;
         return Math.Abs(dx) > Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
     }
+    
+    public Direction PathfindAlignWithPosition(GridPosition targetPosition)
+    {
+        int dx = targetPosition.x - position.x;
+        int dy = targetPosition.y - position.y;
+        return Math.Abs(dx) < Math.Abs(dy) ? (dx > 0 ? Direction.East : Direction.West) : (dy > 0 ? Direction.South : Direction.North);
+    }
 
     public GridPosition GetDirectionOffset(Direction direction)
     {

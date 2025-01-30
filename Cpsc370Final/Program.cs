@@ -50,9 +50,10 @@ class Program
         levelGrid = new LevelGrid(20, 10);
         
         SpawnPlayer();
-        SpawnGoblins();
-        SpawnSkeletons();
-        SpawnWraiths();
+        // SpawnGoblins();
+        // SpawnSkeletons();
+        // SpawnWraiths();
+        SpawnBulls();
         SpawnKey();
         SpawnDoor();
     }
@@ -99,6 +100,15 @@ class Program
         {
             GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
             GameObject wraith = new Wraith(levelGrid, spawnPosition, player);
+        }
+    }
+    
+    private static void SpawnBulls()
+    {
+        for (int i = 0; i < 1; i++)
+        {
+            GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
+            GameObject bull = new Bull(levelGrid, spawnPosition, player);
         }
     }
 
