@@ -3,6 +3,7 @@ using Cpsc370Final.Core;
 using Cpsc370Final.Objects;
 using Cpsc370Final.Entities;
 
+// All comments indicate bug fixes/new implementations
 class Program
 {
     private static LevelGrid levelGrid;
@@ -10,6 +11,11 @@ class Program
     private static Player player;
     private static Door exitDoor;
     private static bool gameOver = false;
+
+    // Store enemy counts to prevent overpopulation
+    private static int goblinCount = 5;
+    private static int skeletonCount = 2;
+    private static int wraithCount = 1;
 
     private static void Main(string[] args)
     {
@@ -32,12 +38,17 @@ class Program
     private static void NextFloor()
     {
         Console.Clear();
+        GameUI.IncreaseFloor();
         GameUI.DisplayMessage($"You completed Floor {GameUI.FloorNumber - 1}! Onto Floor {GameUI.FloorNumber}.");
 
-        // Remove the old player from the grid before regenerating the dungeon
-        levelGrid.RemoveGameObjectFromGrid(player);
+        // Remove all existing enemies before generating the next dungeon
+        RemoveExistingEnemies();
 
-        // Regenerate the map, but keep the same player
+        // Move player to a new empty spot instead of creating a new one
+        GridPosition newPlayerPosition = levelGrid.GetRandomEmptyPosition();
+        levelGrid.SetGameObjectPosition(player, newPlayerPosition);
+
+        // Regenerate map while keeping the same player and enemy count
         GenerateMap();
     }
 
@@ -60,23 +71,41 @@ class Program
     {
         levelGrid = new LevelGrid(20, 10);
 
-        // Keep the same player if they exist, otherwise create a new one
+        // Ensure the same player persists across floors
         if (player == null)
         {
             SpawnPlayer(); // First dungeon run: create the player
         }
         else
         {
-            // Move the existing player to a new valid spawn point on map
             GridPosition newPlayerPosition = levelGrid.GetRandomEmptyPosition();
             levelGrid.SetGameObjectPosition(player, newPlayerPosition);
         }
 
-        SpawnGoblins();
-        SpawnSkeletons();
-        SpawnWraiths();
+        // Preserve enemy count across levels
+        SpawnGoblins(goblinCount);
+        SpawnSkeletons(skeletonCount);
+        SpawnWraiths(wraithCount);
         SpawnKey();
         SpawnDoor();
+    }
+
+    private static void RemoveExistingEnemies()
+    {
+        List<GameObject> enemiesToRemove = new List<GameObject>();
+
+        foreach (GameObject gameObject in levelGrid.GetGameObjects())
+        {
+            if (gameObject is Goblin || gameObject is Skeleton || gameObject is Wraith)
+            {
+                enemiesToRemove.Add(gameObject);
+            }
+        }
+
+        foreach (GameObject enemy in enemiesToRemove)
+        {
+            levelGrid.RemoveGameObjectFromGrid(enemy);
+        }
     }
 
     private static void SpawnPlayer()
@@ -87,37 +116,37 @@ class Program
         player = new Player(levelGrid, spawnPosition);
     }
     
-    private static void SpawnGoblins()
+    private static void SpawnGoblins(int count)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < count; i++)
         {
             GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
-            GameObject goblin = new Goblin(levelGrid, spawnPosition);
+            new Goblin(levelGrid, spawnPosition);
         }
     }
 
-    private static void SpawnSkeletons()
+    private static void SpawnSkeletons(int count)
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < count; i++)
         {
             GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
-            GameObject skeleton = new Skeleton(levelGrid, spawnPosition);
+            new Skeleton(levelGrid, spawnPosition);
         }
     }
 
-    private static void SpawnWraiths()
+    private static void SpawnWraiths(int count)
     {
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < count; i++)
         {
             GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
-            GameObject wraith = new Wraith(levelGrid, spawnPosition, player);
+            new Wraith(levelGrid, spawnPosition, player);
         }
     }
 
     private static void SpawnKey()
     {
         GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
-        Key key = new Key(levelGrid, spawnPosition);
+        new Key(levelGrid, spawnPosition);
     }
 
     private static void SpawnDoor()
