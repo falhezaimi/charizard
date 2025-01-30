@@ -25,7 +25,7 @@ class Program
             Console.WriteLine("\nEnter a command (W/A/S/D to move):");
             string command = Console.ReadLine();
             player.ProcessCommand(command);
-            PerformGameObjectTurnActions();
+            levelGrid.PerformGameObjectTurnActions();
         }
     }
 
@@ -41,14 +41,6 @@ class Program
         Console.Clear();
         Console.WriteLine("\nGame Over! Press any key to return to Main Menu...");
         gameOver = true;
-    }
-
-    private static void PerformGameObjectTurnActions()
-    {
-        foreach (GameObject gameObject in levelGrid.GetGameObjects())
-        {
-            gameObject.PerformTurnAction();
-        }
     }
     
     private static void GenerateMap()

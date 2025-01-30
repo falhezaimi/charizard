@@ -9,6 +9,7 @@ public abstract class GameObject
 {
     public LevelGrid levelGrid;
     public GridPosition position;
+    public bool isMarkedForDeletion = false;
 
     public GameObject(LevelGrid levelGrid, GridPosition spawnPosition)
     {
