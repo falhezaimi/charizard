@@ -4,7 +4,7 @@ using Cpsc370Final.Core;
 public static class GameUI
 {
     public static int FloorNumber { get; private set; } = 1;
-    private static int MaxFloors = 5; // Define the max floor count
+    private static int MaxFloors = 14; // Define the max floor count
 
     public static void IncreaseFloor()
     {
@@ -12,6 +12,11 @@ public static class GameUI
         {
             FloorNumber++;
         }
+    }
+
+    public static void SetFloor(int newFloorNumber)
+    {
+        FloorNumber = newFloorNumber;
     }
 
     public static bool IsFinalFloor()

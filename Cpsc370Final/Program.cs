@@ -14,6 +14,7 @@ class Program
 
     private static void Main(string[] args)
     {
+        GameUI.SetFloor(1);
         GenerateMap();
         player.OnDied += EndGame;
         player.OnEnteredDoor += NextFloor;
@@ -24,8 +25,8 @@ class Program
             GameUI.DisplayUI(levelGrid, player, keysToCollect);
             
             Console.WriteLine("\nEnter a command (W/A/S/D to move):");
-            string command = Console.ReadLine();
-            player.ProcessCommand(command);
+            ConsoleKey keyInput = Console.ReadKey().Key;
+            player.ProcessKeyInput(keyInput);
             levelGrid.PerformGameObjectTurnActions();
         }
     }
@@ -98,8 +99,8 @@ class Program
         else if (floor == 5)
         {
             SpawnKeys(3);
-            SpawnGoblins(4);
-            SpawnSkeletons(4);
+            SpawnGoblins(2);
+            SpawnSkeletons(3);
         } else if (floor == 6)
         {
             SpawnGoblins(3);
@@ -118,12 +119,12 @@ class Program
         } else if (floor == 9)
         {
             SpawnBulls(1);
-            SpawnKeys(2);
+            SpawnKeys(4);
         } else if (floor == 10)
         {
             SpawnBulls(1);
-            SpawnSkeletons(3);
-            SpawnBats(3);
+            SpawnSkeletons(2);
+            SpawnBats(2);
             SpawnKeys(2);
         } else if (floor == 11)
         {
@@ -137,6 +138,10 @@ class Program
             SpawnWraiths(1);
             SpawnBulls(3);
             SpawnKeys(4);
+        } else if (floor == 13)
+        {
+            SpawnMimicDoor();
+            SpawnKeys(0);
         }
     }
 
