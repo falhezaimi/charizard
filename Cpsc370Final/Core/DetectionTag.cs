@@ -12,4 +12,5 @@
      Bat,
      Key,
      Door,
+     MimicDoor,
  }

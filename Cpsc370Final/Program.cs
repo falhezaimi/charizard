@@ -107,6 +107,7 @@ class Program
         {
             SpawnBulls(0); // 10
             SpawnWraiths(1); // Added 1 Wraith
+            SpawnMimicDoor(); // 🔥 Add the Mimic Door!
         }
     }
 
@@ -208,5 +209,11 @@ class Program
     {
         GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
         exitDoor = new Door(levelGrid, spawnPosition, player, keysToCollect);
+    }
+    
+    private static void SpawnMimicDoor()
+    {
+        GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
+        new MimicDoor(levelGrid, spawnPosition, player, keysToCollect);
     }
 }
