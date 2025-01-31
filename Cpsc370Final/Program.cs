@@ -25,7 +25,7 @@ class Program
             // Display the UI with Floor Number
             GameUI.DisplayUI(levelGrid, player, keysToCollect);
             
-            Console.WriteLine("\nEnter a command (W/A/S/D to move):");
+            Console.WriteLine("\nUse the arrow keys to move...):");
             ConsoleKey keyInput = Console.ReadKey().Key;
             player.ProcessKeyInput(keyInput);
             levelGrid.PerformGameObjectTurnActions();
@@ -56,7 +56,6 @@ class Program
     {
         Console.Clear();
         Console.WriteLine("\n   ____                         ___                 \n / ___| __ _ _ __ ___   ___   / _ \\__   _____ _ __ \n| |  _ / _` | '_ ` _ \\ / _ \\ | | | \\ \\ / / _ \\ '__|\n| |_| | (_| | | | | | |  __/ | |_| |\\ V /  __/ |   \n \\____|\\__,_|_| |_| |_|\\___|  \\___/  \\_/ \\___|_|   ");
-        Console.WriteLine("\nPress any key to return to Main Menu...");
         gameOver = true;
     }
 

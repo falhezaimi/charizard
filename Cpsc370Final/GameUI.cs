@@ -27,6 +27,9 @@ public static class GameUI
     public static void DisplayUI(LevelGrid levelGrid, Player player, int keysToCollect)
     {
         Console.Clear();
+        Console.WriteLine("\n  ____   ___   ____ \n|  _ \\ / _ \\ / ___|\n| |_) | | | | |  _ \n|  _ <| |_| | |_| |\n|_| \\_\\\\___/ \\____|");
+        Console.WriteLine();
+        
         Console.Write($"Floor: {FloorNumber}\t");
 
         Console.ForegroundColor = (player.HeldKeys >= keysToCollect) ? ConsoleColor.Magenta : ConsoleColor.Gray;
