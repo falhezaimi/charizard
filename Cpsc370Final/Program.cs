@@ -14,6 +14,8 @@ class Program
 
     private static void Main(string[] args)
     {
+        GameUI.DisplayStartScreen();
+        
         GenerateMap();
         player.OnDied += EndGame;
         player.OnEnteredDoor += NextFloor;
@@ -53,7 +55,8 @@ class Program
     private static void EndGame()
     {
         Console.Clear();
-        Console.WriteLine("\nGame Over! Press any key to return to Main Menu...");
+        Console.WriteLine("\n   ____                         ___                 \n / ___| __ _ _ __ ___   ___   / _ \\__   _____ _ __ \n| |  _ / _` | '_ ` _ \\ / _ \\ | | | \\ \\ / / _ \\ '__|\n| |_| | (_| | | | | | |  __/ | |_| |\\ V /  __/ |   \n \\____|\\__,_|_| |_| |_|\\___|  \\___/  \\_/ \\___|_|   ");
+        Console.WriteLine("\nPress any key to return to Main Menu...");
         gameOver = true;
     }
 
