@@ -14,6 +14,12 @@ class Program
 
     private static void Main(string[] args)
     {
+        GameUI.SetFloor(1);
+        GameLore.ShowIntro();
+        GameLore.PrintWithTypewriterEffect("Press any key to begin...");
+        Console.ReadKey();
+        GameUI.DisplayStartScreen();
+        
         GenerateMap();
         player.OnDied += EndGame;
         player.OnEnteredDoor += NextFloor;
@@ -23,9 +29,9 @@ class Program
             // Display the UI with Floor Number
             GameUI.DisplayUI(levelGrid, player, keysToCollect);
             
-            Console.WriteLine("\nEnter a command (W/A/S/D to move):");
-            string command = Console.ReadLine();
-            player.ProcessCommand(command);
+            Console.WriteLine("\nUse the arrow keys to move...):");
+            ConsoleKey keyInput = Console.ReadKey().Key;
+            player.ProcessKeyInput(keyInput);
             levelGrid.PerformGameObjectTurnActions();
         }
     }
@@ -53,7 +59,8 @@ class Program
     private static void EndGame()
     {
         Console.Clear();
-        Console.WriteLine("\nGame Over! Press any key to return to Main Menu...");
+        Console.WriteLine("\n   ____                         ___                 \n / ___| __ _ _ __ ___   ___   / _ \\__   _____ _ __ \n| |  _ / _` | '_ ` _ \\ / _ \\ | | | \\ \\ / / _ \\ '__|\n| |_| | (_| | | | | | |  __/ | |_| |\\ V /  __/ |   \n \\____|\\__,_|_| |_| |_|\\___|  \\___/  \\_/ \\___|_|   \n");
+        GameLore.ShowLosingEnding();
         gameOver = true;
     }
 
@@ -65,49 +72,82 @@ class Program
         levelGrid = new LevelGrid(20, 10);
         
         SpawnPlayer();
-        SpawnEnemiesBasedOnFloor(); // Custom enemy spawns for each level
-        SpawnKey();
+        SpawnGameObjectsBasedOnFloor(); // Custom enemy spawns for each level
         SpawnDoor();
     }
 
     /// <summary>
     /// Controls the number of enemies spawned per floor.
     /// </summary>
-    private static void SpawnEnemiesBasedOnFloor()
+    private static void SpawnGameObjectsBasedOnFloor()
     {
         int floor = GameUI.FloorNumber;
 
         if (floor == 1)
         {
-            SpawnGoblins(5);
-            SpawnSkeletons(1);
+            SpawnKeys(1);
         }
         else if (floor == 2)
         {
-            SpawnGoblins(3);
-            SpawnSkeletons(1);
-            SpawnBats(2);
+            SpawnKeys(1);
+            SpawnGoblins(1);
         }
         else if (floor == 3)
         {
-            SpawnGoblins(0); // 8
-            SpawnSkeletons(0); // 3
-            SpawnBats(1); // 1
-            SpawnBulls(1); //1
+            SpawnKeys(1);
+            SpawnGoblins(3);
         }
         else if (floor == 4)
         {
-            SpawnGoblins(0); // 10 
-            SpawnSkeletons(0); // 3
-            SpawnBats(3); // 3
-            SpawnBulls(0); //2
-            SpawnWraiths(1); // Added 1 Wraith
+            SpawnKeys(2);
+            SpawnSkeletons(3);
         }
         else if (floor == 5)
         {
-            SpawnBulls(0); // 10
-            SpawnWraiths(1); // Added 1 Wraith
-            SpawnMimicDoor(); // Add the Mimic Door!
+            SpawnKeys(3);
+            SpawnGoblins(2);
+            SpawnSkeletons(3);
+        } else if (floor == 6)
+        {
+            SpawnGoblins(3);
+            SpawnBats(3);
+            SpawnSkeletons(2);
+            SpawnKeys(1);
+        } else if (floor == 7)
+        {
+            SpawnWraiths(1);
+            SpawnSkeletons(3);
+            SpawnKeys(2);
+        } else if (floor == 8)
+        { 
+            SpawnWraiths(5);
+            SpawnKeys(1);
+        } else if (floor == 9)
+        {
+            SpawnBulls(1);
+            SpawnKeys(4);
+        } else if (floor == 10)
+        {
+            SpawnBulls(1);
+            SpawnSkeletons(2);
+            SpawnBats(2);
+            SpawnKeys(2);
+        } else if (floor == 11)
+        {
+            SpawnGoblins(3);
+            SpawnBats(3);
+            SpawnBulls(1);
+            SpawnWraiths(1);
+            SpawnKeys(2);
+        } else if (floor == 12)
+        {
+            SpawnWraiths(1);
+            SpawnBulls(3);
+            SpawnKeys(4);
+        } else if (floor == 13)
+        {
+            SpawnMimicDoor();
+            SpawnKeys(0);
         }
     }
 
@@ -195,11 +235,14 @@ class Program
     /// <summary>
     /// Spawns a key at a random position.
     /// </summary>
-    private static void SpawnKey()
+    private static void SpawnKeys(int count)
     {
-        GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
-        new Key(levelGrid, spawnPosition);
-        keysToCollect = 1;
+        for (int i = 0; i < count; i++)
+        {
+            GridPosition spawnPosition = levelGrid.GetRandomEmptyPosition();
+            new Key(levelGrid, spawnPosition);
+        }
+        keysToCollect = count;
     }
 
     /// <summary>

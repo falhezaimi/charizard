@@ -38,15 +38,12 @@ public class Player : GameObject
         }
     }
 
-    public void ProcessCommand(string command)
+    public void ProcessKeyInput(ConsoleKey key)
     {
-        command = command.ToLower();
-        command = command.Trim();
-
-        if (command == "w") Move(Direction.North);
-        else if (command == "a") Move(Direction.West);
-        else if (command == "s") Move(Direction.South);
-        else if (command == "d") Move(Direction.East);
+        if (key == ConsoleKey.UpArrow) Move(Direction.North);
+        else if (key == ConsoleKey.LeftArrow) Move(Direction.West);
+        else if (key == ConsoleKey.DownArrow) Move(Direction.South);
+        else if (key == ConsoleKey.RightArrow) Move(Direction.East);
     }
 
     public override void PerformTurnAction()
