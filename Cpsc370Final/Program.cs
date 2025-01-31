@@ -107,7 +107,7 @@ class Program
         {
             SpawnBulls(0); // 10
             SpawnWraiths(1); // Added 1 Wraith
-            SpawnMimicDoor(); // 🔥 Add the Mimic Door!
+            SpawnMimicDoor(); // Add the Mimic Door!
         }
     }
 
