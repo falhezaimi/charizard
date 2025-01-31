@@ -12,6 +12,17 @@
 - Fares Alhezaimi
 - Queenie Lin
 
+### Contribution Note:
+- GitHub commits and branching may not be reflective of each person's individual contributed effort due to several factors, such as troubles with git/GitKraken, errors, limited time windows, extreme programming, and each of the person's own life.
+- All team members contributed greatly towards the development of this project, with each working in tandem to create unit tests while rotating roles between being a Scrum Master and developer.
+- All QA tests were done by all members, though open feedback is much appreciated.
+
+- Cristian Melgoza: Created base GameObject and Grid system + level design and population; spearheaded production and assisted with C# syntax.
+- Brent Matthew Ortizo: Created scalable level generation and optimized enemy AI + integrated and merged several branches into production (i.e, enemy wireframes inheriting from GameObject).
+- Irene Ichwan: Created wireframe for the skeleton, goblin, wraith, and general entity movement, as well as functionality for the key collection and door opening. 
+- Fares Alhezaimi: Created significant unit tests and the story writing with their animations.
+- Queenie Lin: Worked on GameUIs, refactoring, and worked with Irene on enemies.
+
 ## 📜 Table of Contents
 - Features
 - How to Play
@@ -56,9 +67,9 @@
 - C# compiler (`csc`)
 
 ### Clone & Run
-```git clone https://github.com/your-repo/charizard.git```
-```cd charizard```
-```dotnet run```
+- ```git clone https://github.com/your-repo/charizard.git```
+- ```cd charizard```
+- ```dotnet run```
 
 ## ⌨️ Controls
 - Arrow Up (↑) – Move Up
