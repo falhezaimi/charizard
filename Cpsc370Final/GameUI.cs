@@ -4,7 +4,7 @@ using Cpsc370Final.Core;
 public static class GameUI
 {
     public static int FloorNumber { get; private set; } = 1;
-    private static int MaxFloors = 14; // Define the max floor count
+    private static int MaxFloors = 13; // Define the max floor count
 
     public static void IncreaseFloor()
     {
@@ -48,6 +48,7 @@ public static class GameUI
     {
         Console.Clear();
         Console.WriteLine("\n🎉 You completed ROG! 🎉\n");
+        GameLore.ShowWinningEnding();
         Console.WriteLine("Press any key to exit...");
         Console.ReadKey();
     }

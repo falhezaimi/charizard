@@ -14,6 +14,10 @@ class Program
 
     private static void Main(string[] args)
     {
+        GameUI.SetFloor(1);
+        GameLore.ShowIntro();
+        GameLore.PrintWithTypewriterEffect("Press any key to begin...");
+        Console.ReadKey();
         GameUI.DisplayStartScreen();
         
         GenerateMap();
@@ -55,7 +59,8 @@ class Program
     private static void EndGame()
     {
         Console.Clear();
-        Console.WriteLine("\n   ____                         ___                 \n / ___| __ _ _ __ ___   ___   / _ \\__   _____ _ __ \n| |  _ / _` | '_ ` _ \\ / _ \\ | | | \\ \\ / / _ \\ '__|\n| |_| | (_| | | | | | |  __/ | |_| |\\ V /  __/ |   \n \\____|\\__,_|_| |_| |_|\\___|  \\___/  \\_/ \\___|_|   ");
+        Console.WriteLine("\n   ____                         ___                 \n / ___| __ _ _ __ ___   ___   / _ \\__   _____ _ __ \n| |  _ / _` | '_ ` _ \\ / _ \\ | | | \\ \\ / / _ \\ '__|\n| |_| | (_| | | | | | |  __/ | |_| |\\ V /  __/ |   \n \\____|\\__,_|_| |_| |_|\\___|  \\___/  \\_/ \\___|_|   \n");
+        GameLore.ShowLosingEnding();
         gameOver = true;
     }
 
