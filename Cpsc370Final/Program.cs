@@ -11,19 +11,50 @@ class Program
     private static Door exitDoor;
     private static int keysToCollect;
     private static bool gameOver = false;
+    
+    private enum GameState
+    {
+        IntroSequence,
+        TitleScreen,
+        Game,
+    }
+    private static GameState currentGameState = GameState.IntroSequence;
 
     private static void Main(string[] args)
     {
-        GameUI.SetFloor(1);
+        while (true)
+        {
+            switch (currentGameState)
+            {
+                case GameState.IntroSequence: IntroSequence(); break;
+                case GameState.TitleScreen: TitleScreen(); break;
+                case GameState.Game: Game(); break;
+            }
+        }
+    }
+
+    private static void IntroSequence()
+    {
         GameLore.ShowIntro();
         GameLore.PrintWithTypewriterEffect("Press any key to begin...");
         Console.ReadKey();
+        currentGameState = GameState.TitleScreen;
+    }
+
+    private static void TitleScreen()
+    {
         GameUI.DisplayStartScreen();
-        
+        gameOver = false;
+        currentGameState = GameState.Game;
+    }
+
+    private static void Game()
+    {
+        GameUI.SetFloor(1);
         GenerateMap();
         player.OnDied += EndGame;
         player.OnEnteredDoor += NextFloor;
-
+        
         while (!gameOver)
         {
             // Display the UI with Floor Number
@@ -34,6 +65,8 @@ class Program
             player.ProcessKeyInput(keyInput);
             levelGrid.PerformGameObjectTurnActions();
         }
+        
+        currentGameState = GameState.TitleScreen;
     }
 
     /// <summary>
@@ -62,6 +95,8 @@ class Program
         Console.WriteLine("\n   ____                         ___                 \n / ___| __ _ _ __ ___   ___   / _ \\__   _____ _ __ \n| |  _ / _` | '_ ` _ \\ / _ \\ | | | \\ \\ / / _ \\ '__|\n| |_| | (_| | | | | | |  __/ | |_| |\\ V /  __/ |   \n \\____|\\__,_|_| |_| |_|\\___|  \\___/  \\_/ \\___|_|   \n");
         GameLore.ShowLosingEnding();
         gameOver = true;
+        GameLore.PrintWithTypewriterEffect("Press any key to return to menu...");
+        Console.ReadKey();
     }
 
     /// <summary>
