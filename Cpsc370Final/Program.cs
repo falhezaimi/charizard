@@ -22,6 +22,8 @@ class Program
 
     private static void Main(string[] args)
     {
+        ConsoleHelper.ToggleFullScreen();
+        
         while (true)
         {
             switch (currentGameState)
