@@ -49,7 +49,7 @@ public static class GameUI
         Console.Clear();
         Console.WriteLine("\n🎉 You completed ROG! 🎉\n");
         GameLore.ShowWinningEnding();
-        Console.WriteLine("Press any key to exit...");
+        Console.WriteLine("Press any key to return to menu...");
         Console.ReadKey();
     }
     public static void DisplayStartScreen()
