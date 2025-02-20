@@ -31,12 +31,6 @@ public class ConsoleHelper
     [DllImport("user32.dll")]
     private static extern bool IsZoomed(IntPtr hWnd);
     
-    [DllImport("user32.dll")]
-    private static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
-    
-    [DllImport("user32.dll")]
-    private static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
-    
     public static void ToggleFullScreen()
     {
         if (IsInFullScreen())
@@ -47,7 +41,6 @@ public class ConsoleHelper
         {
             ShowWindow(consoleWindowHandle, SW_MAXIMIZE);
         }
-        Console.WriteLine($"LargestWidth: {Console.LargestWindowWidth} + LargestHeight: {Console.LargestWindowHeight}");
     }
 
     public static bool IsInFullScreen()

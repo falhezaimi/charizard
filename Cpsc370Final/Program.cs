@@ -1,4 +1,6 @@
-﻿namespace Cpsc370Final;
+﻿using System.Text;
+
+namespace Cpsc370Final;
 using Cpsc370Final.Core;
 using Cpsc370Final.Objects;
 using Cpsc370Final.Entities;
@@ -23,7 +25,10 @@ class Program
     private static void Main(string[] args)
     {
         ConsoleHelper.ToggleFullScreen();
+        Console.Clear();
+        Console.CursorVisible = false;
         
+        currentGameState = GameState.TitleScreen;
         while (true)
         {
             switch (currentGameState)
