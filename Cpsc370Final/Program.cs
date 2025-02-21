@@ -51,18 +51,37 @@ class Program
 
     private static void TitleScreen()
     {
-        GameUI.DisplayStartScreen();
-        Console.Write("Press Q to quit.");
+        bool showConsoleDebuggingData = false;
         
-        InputAction inputAction = InputReader.WaitForButtonPress();
-        if (inputAction == InputAction.Back)
+        while (true)
         {
-            Environment.Exit(0);
-        }
-        Console.Clear();
+            GameUI.DisplayStartScreen();
+            Console.WriteLine("Press Q to quit.");
+            Console.WriteLine("Press Spacebar to show/refresh console debugging data");
+
+            if (showConsoleDebuggingData)
+            {
+                Console.WriteLine($"\nBuffer Width: {Console.BufferWidth}, Buffer Height: {Console.BufferHeight}");
+                Console.WriteLine($"\nWindow Width: {Console.WindowWidth}, Window Height: {Console.WindowHeight}");
+            }
         
-        gameOver = false;
-        currentGameState = GameState.Game;
+            InputAction inputAction = InputReader.WaitForButtonPress();
+            if (inputAction == InputAction.Back)
+            {
+                Environment.Exit(0);
+            } else if (inputAction == InputAction.Ability)
+            {
+                // Temporary for testing window dimensions
+                showConsoleDebuggingData = true;
+            }
+            else
+            {
+                gameOver = false;
+                currentGameState = GameState.Game;
+                break;
+            }
+            Console.Clear();
+        }
     }
 
     private static void Game()
