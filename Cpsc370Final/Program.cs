@@ -2,8 +2,8 @@
 
 namespace Cpsc370Final;
 using Cpsc370Final.Core;
-using Cpsc370Final.Objects;
 using Cpsc370Final.Entities;
+using Cpsc370Final.Objects;
 
 class Program
 {
