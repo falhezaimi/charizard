@@ -50,7 +50,7 @@ public static class GameUI
         Console.WriteLine("\n🎉 You completed ROG! 🎉\n");
         GameLore.ShowWinningEnding();
         Console.WriteLine("Press any key to return to menu...");
-        Console.ReadKey();
+        InputReader.WaitForButtonPress();
     }
     public static void DisplayStartScreen()
     {
@@ -58,9 +58,5 @@ public static class GameUI
         Console.WriteLine("\n  ____   ___   ____ \n|  _ \\ / _ \\ / ___|\n| |_) | | | | |  _ \n|  _ <| |_| | |_| |\n|_| \\_\\\\___/ \\____|");
         Console.WriteLine("\nWelcome to ROG, a text-based, ASCII-styled dungeon crawler!\n\nYour goal is to delve through randomly generated floors,\ncollect keys, and dash for the door while surviving encounters\nwith the dangerous monsters.");
         Console.WriteLine("\nPress any key to play...\n");
-
-        Console.ReadKey();
-
-        Console.Clear();
     }
 }

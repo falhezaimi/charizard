@@ -1,4 +1,4 @@
-﻿namespace Cpsc370Final.InputReader;
+﻿namespace Cpsc370Final;
 
 using InputMap = Dictionary<ConsoleKey, InputAction>;
 
@@ -51,7 +51,7 @@ public static class InputReader
         {ConsoleKey.RightArrow, InputAction.Right},
         {ConsoleKey.Enter, InputAction.Interact},
         {ConsoleKey.Spacebar, InputAction.Ability},
-        {ConsoleKey.Escape, InputAction.Back}
+        {ConsoleKey.Q, InputAction.Back}
     };
     
     // Note, for the arcade machine, only the Space, X, Z, V, and C buttons can be read

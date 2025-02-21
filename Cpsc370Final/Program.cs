@@ -24,6 +24,7 @@ class Program
 
     private static void Main(string[] args)
     {
+        InputReader.SetInputMode(InputMode.Computer);
         ConsoleHelper.ToggleFullScreen();
         Console.Clear();
         Console.CursorVisible = false;
@@ -44,13 +45,22 @@ class Program
     {
         GameLore.ShowIntro();
         GameLore.PrintWithTypewriterEffect("Press any key to begin...");
-        Console.ReadKey();
+        InputReader.WaitForButtonPress();
         currentGameState = GameState.TitleScreen;
     }
 
     private static void TitleScreen()
     {
         GameUI.DisplayStartScreen();
+        Console.Write("Press Q to quit.");
+        
+        InputAction inputAction = InputReader.WaitForButtonPress();
+        if (inputAction == InputAction.Back)
+        {
+            Environment.Exit(0);
+        }
+        Console.Clear();
+        
         gameOver = false;
         currentGameState = GameState.Game;
     }
@@ -68,8 +78,15 @@ class Program
             GameUI.DisplayUI(levelGrid, player, keysToCollect);
             
             Console.WriteLine("\nUse the arrow keys to move...):");
-            ConsoleKey keyInput = Console.ReadKey().Key;
-            player.ProcessKeyInput(keyInput);
+            
+            InputAction inputAction = InputReader.ReadNextInput();
+            if (inputAction == InputAction.Back)
+            {
+                gameOver = true;
+                break;
+            }
+            player.ProcessInputAction(inputAction);
+            
             levelGrid.PerformGameObjectTurnActions();
         }
         
@@ -103,7 +120,7 @@ class Program
         GameLore.ShowLosingEnding();
         gameOver = true;
         GameLore.PrintWithTypewriterEffect("Press any key to return to menu...");
-        Console.ReadKey();
+        InputReader.WaitForButtonPress();
     }
 
     /// <summary>
